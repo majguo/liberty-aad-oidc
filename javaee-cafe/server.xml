@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="defaultServer">
+
+	<!-- Enable features -->
+	<featureManager>
+		<feature>javaee-8.0</feature>
+		<feature>openidConnectClient-1.0</feature>
+		<feature>transportSecurity-1.0</feature>
+		<feature>appSecurity-2.0</feature>
+	</featureManager>
+
+	<!-- This keystore is used for SSL & JWT. Make sure it imported root certificate of 
+		host "login.microsoftonline.com" for SSL traffic -->
+	<keyStore id="defaultKeyStore" password="${default.keystore.pass}"
+		location="${server.config.dir}/resources/security/key.jks" type="JKS" />
+
+	<openidConnectClient id="liberty-aad-oidc-javaeecafe"
+		clientId="${client.id}"
+		clientSecret="${client.secret}"
+		discoveryEndpointUrl="https://login.microsoftonline.com/${tenant.id}/v2.0/.well-known/openid-configuration" 
+		signatureAlgorithm="RS256"
+		userIdentityToCreateSubject="upn"
+		groupIdentifier="groups"
+		inboundPropagation="supported" />
+
+	<!-- To access this server from a remote client add a host attribute to 
+		the following element, e.g. host="*" -->
+	<httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" httpsPort="9643" />
+
+	<!-- Automatically expand WAR files and EAR files -->
+	<applicationManager autoExpand="true" />
+
+	<dataSource id="JavaEECafeDB"
+		jdbcDriverRef="postgresql-driver" jndiName="jdbc/JavaEECafeDB"
+		transactional="true" type="javax.sql.ConnectionPoolDataSource">
+		<properties databaseName="postgres" password=""
+			portNumber="5432" serverName="172.17.0.2" user="postgres" />
+	</dataSource>
+
+	<jdbcDriver id="postgresql-driver"
+		javax.sql.ConnectionPoolDataSource="org.postgresql.ds.PGConnectionPoolDataSource"
+		javax.sql.XADataSource="org.postgresql.xa.PGXADataSource"
+		libraryRef="postgresql-library" />
+
+	<library id="postgresql-library">
+		<fileset dir="${shared.resource.dir}" id="PostgreSQLFileset" includes="postgresql-42.2.4.jar" />
+	</library>
+
+	<webApplication id="javaee-cafe" location="${server.config.dir}/apps/javaee-cafe.war">
+		<application-bnd>
+			<security-role name="users">
+				<special-subject type="ALL_AUTHENTICATED_USERS" />
+			</security-role>
+		</application-bnd>
+	</webApplication>
+</server>
