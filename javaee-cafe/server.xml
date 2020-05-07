@@ -11,13 +11,13 @@
 
 	<!-- This keystore is used for SSL & JWT. Make sure it imported root certificate of 
 		host "login.microsoftonline.com" for SSL traffic -->
-	<keyStore id="defaultKeyStore" password="${default.keystore.pass}"
+	<keyStore id="defaultKeyStore" password="${DEFAULT_KEYSTORE_PASS}"
 		location="${server.config.dir}/resources/security/key.jks" type="JKS" />
 
 	<openidConnectClient id="liberty-aad-oidc-javaeecafe"
-		clientId="${client.id}"
-		clientSecret="${client.secret}"
-		discoveryEndpointUrl="https://login.microsoftonline.com/${tenant.id}/v2.0/.well-known/openid-configuration" 
+		clientId="${CLIENT_ID}"
+		clientSecret="${CLIENT_SECRET}"
+        discoveryEndpointUrl="https://login.microsoftonline.com/${TENANT_ID}/v2.0/.well-known/openid-configuration" 
 		signatureAlgorithm="RS256"
 		userIdentityToCreateSubject="upn"
 		groupIdentifier="groups"

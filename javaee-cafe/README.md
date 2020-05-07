@@ -17,11 +17,6 @@ The next step is to get the application up and running. Follow the steps below t
 
 * Clone [this repo](https://github.com/majguo/liberty-aad-oidc) if not done before
 * Change directory to `<path-to-repo>/javaee-cafe`
-* Replace the placeholders for the following properties in `server.xml` with valid values:
-  * `${default.keystore.pass}`: password for default keystore, make sure it imported root certificate of host "login.microsoftonline.com" for SSL traffic. You can use "key.jks" included in the repo for testing purpose, "secret" as password
-  * `${client.id}`: the one you logged down in previous step
-  * `${client.secret}`: the one you logged down in previous step
-  * `${tenant.id}`: the one you logged down in previous step
 * Run `mvn clean package`. The generated war file is under `./target`
 * You should explore the Dockerfile in this directory used to build the Docker image. It simply starts from the `websphere-liberty` image, adds the `javaee-cafe.war` from `./target` into the `apps` directory, copies the PostgreSqQL driver `postgresql-42.2.4.jar` into the `shared/resources` directory and replaces the defaultServer configuration file `server.xml`.
 * Notice how the data source properties in the `server.xml` file looks like:
@@ -37,9 +32,13 @@ password=""</pre>
 	```
 	docker build -t javaee-cafe .
 	```
-* To run the newly built image, use the command:
+* To run the newly built image, replace `<...>` with the valid values and execute the command:
 	```
-	docker run -it --rm -p 9643:9643 javaee-cafe
+	docker run -it --rm -p 9643:9643 -e DEFAULT_KEYSTORE_PASS=<...> -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
 	```
+  * `DEFAULT_KEYSTORE_PASS`: password for default keystore, make sure it imported root certificate of host "login.microsoftonline.com" for SSL traffic. You can use "key.jks" included in the repo for testing purpose, "secret" as password
+  * `CLIENT_ID`: the one you logged down in previous step
+  * `CLIENT_SECRET`: the one you logged down in previous step
+  * `TENANT_ID`: the one you logged down in previous step
 * Wait for WebSphere Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 * Once the application starts, you can visit the JSF client at [https://localhost:9643/javaee-cafe/index.xhtml](https://localhost:9643/javaee-cafe/index.xhtml).

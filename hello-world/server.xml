@@ -11,13 +11,13 @@
 
     <!-- Import default Java trust store for root certs -->
     <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="defaultTrustStore" />
-    <keyStore id="defaultKeyStore" type="JKS" password="${default.keystore.pass}" />
-    <keyStore id="defaultTrustStore" location="${JAVA_HOME}/lib/security/cacerts" type="JKS" password="${java.truststore.pass}" />
+    <keyStore id="defaultKeyStore" type="JKS" password="${DEFAULT_KEYSTORE_PASS}" />
+    <keyStore id="defaultTrustStore" location="${JAVA_HOME}/lib/security/cacerts" type="JKS" password="${JAVA_TRUSTSTORE_PASS}" />
     
     <openidConnectClient id="liberty-aad-oidc-helloworld"
-        clientId="${client.id}"
-		clientSecret="${client.secret}"
-        discoveryEndpointUrl="https://login.microsoftonline.com/${tenant.id}/v2.0/.well-known/openid-configuration"
+        clientId="${CLIENT_ID}"
+		clientSecret="${CLIENT_SECRET}"
+        discoveryEndpointUrl="https://login.microsoftonline.com/${TENANT_ID}/v2.0/.well-known/openid-configuration"
         signatureAlgorithm="RS256"
         userIdentityToCreateSubject="upn"
         groupIdentifier="groups"
