@@ -16,13 +16,13 @@ This demo project provides examples (hello-world & javaee-cafe) on how to secure
 ## Setup Azure Active Directory
 - [Create a new Azure AD tenant](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-create-new-tenant#create-a-new-azure-ad-tenant) if not existing, log down Directory (tenant) ID
 - [Create Azure AD users](https://docs.microsoft.com/en-us/azure/openshift/howto-aad-app-configuration#create-a-new-azure-active-directory-user) if not existing, log down their emial addresses & passwords
-- [Create Azure AD security groups](https://docs.microsoft.com/en-us/azure/openshift/howto-aad-app-configuration#create-an-azure-ad-security-group) "admin" & "users" if not existing, add created users as group members, log down group IDs 
+- Optional: [Create Azure AD security groups](https://docs.microsoft.com/en-us/azure/openshift/howto-aad-app-configuration#create-an-azure-ad-security-group) "admin" & "users" if not existing, add created users as group members, log down group IDs 
 - [Create an Azure AD app registration for authentication](https://docs.microsoft.com/en-us/azure/openshift/configure-azure-ad-ui#create-an-azure-active-directory-application-for-authentication) if not existing, log down Application (client) ID & client secret. Fill in <b>Redirect URI</b> with the redirect URI of applicatoins to be deployed later:
   - https://<span></span>localhost:9543/oidcclient/redirect/liberty-aad-oidc-helloworld
   - https://<span></span>localhost:9643/oidcclient/redirect/liberty-aad-oidc-javaeecafe
 - [Configure optional claims](https://docs.microsoft.com/en-us/azure/openshift/configure-azure-ad-ui#configure-optional-claims)
   - Add optional claim > Select ID then check the email and upn claims
-  - Add groups claim > Select Security groups then select Group ID for each token type
+  - Optional: Add groups claim > Select Security groups then select Group ID for each token type
 
 ## Build & run application with Docker
 - [hello-world](https://github.com/majguo/liberty-aad-oidc/tree/master/hello-world)
