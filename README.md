@@ -24,6 +24,6 @@ This demo project provides examples (hello-world & javaee-cafe) on how to secure
   - Add optional claim > Select ID then check the email and upn claims
   - [Optional] Add groups claim > Select Security groups then select Group ID for each token type
 
-## Build & run application with Docker
+## Build & run application
 - [hello-world](https://github.com/majguo/liberty-aad-oidc/tree/master/hello-world)
 - [javaee-cafe](https://github.com/majguo/liberty-aad-oidc/tree/master/javaee-cafe)
