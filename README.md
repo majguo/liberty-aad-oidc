@@ -18,8 +18,8 @@ This demo project provides examples (hello-world & javaee-cafe) on how to secure
 - [Create Azure AD users](https://docs.microsoft.com/en-us/azure/openshift/howto-aad-app-configuration#create-a-new-azure-active-directory-user) if not existing, log down their emial addresses & passwords
 - [Create Azure AD security groups](https://docs.microsoft.com/en-us/azure/openshift/howto-aad-app-configuration#create-an-azure-ad-security-group) "admin" & "users" if not existing, add created users as group members, log down group IDs 
 - [Create an Azure AD app registration for authentication](https://docs.microsoft.com/en-us/azure/openshift/configure-azure-ad-ui#create-an-azure-active-directory-application-for-authentication) if not existing, log down Application (client) ID & client secret. Fill in <b>Redirect URI</b> with the redirect URI of applicatoins to be deployed later:
-  - *https://localhost:9543/oidcclient/redirect/liberty-aad-oidc-helloworld*
-  - *https://localhost:9643/oidcclient/redirect/liberty-aad-oidc-javaeecafe*
+  - https://<span></span>localhost:9543/oidcclient/redirect/liberty-aad-oidc-helloworld
+  - https://<span></span>localhost:9643/oidcclient/redirect/liberty-aad-oidc-javaeecafe
 - [Configure optional claims](https://docs.microsoft.com/en-us/azure/openshift/configure-azure-ad-ui#configure-optional-claims)
   - Add optional claim > Select ID then check the email and upn claims
   - Add groups claim > Select Security groups then select Group ID for each token type
