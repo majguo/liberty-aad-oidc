@@ -23,7 +23,7 @@ The next step is to get the application up and running. Follow the steps below t
   * `${client.secret}`: the one you logged down in previous step
   * `${tenant.id}`: the one you logged down in previous step
 * Run `mvn clean package`. The generated war file is under `./target`
-* You should explore the Dockerfile in this directory used to build the Docker image. It simply starts from the `websphere-liberty` image, adds the `javaee-cafe.war` from `./target` into the `dropins` directory, copies the PostgreSqQL driver `postgresql-42.2.4.jar` into the `shared/resources` directory and replaces the defaultServer configuration file `server.xml`.
+* You should explore the Dockerfile in this directory used to build the Docker image. It simply starts from the `websphere-liberty` image, adds the `javaee-cafe.war` from `./target` into the `apps` directory, copies the PostgreSqQL driver `postgresql-42.2.4.jar` into the `shared/resources` directory and replaces the defaultServer configuration file `server.xml`.
 * Notice how the data source properties in the `server.xml` file looks like:
 
 <pre>serverName="172.17.0.2"
@@ -34,12 +34,10 @@ password=""</pre>
 
 * Note, we are depending on the fact that the database is the first container to start and has the IP 172.17.0.2. For Mac and Windows users the serverName could be changed to `host.docker.internal`. That will make the container start order less significant.
 * Open a console. Build a Docker image tagged `javaee-cafe` by running the following command:
-
 	```
 	docker build -t javaee-cafe .
 	```
 * To run the newly built image, use the command:
-
 	```
 	docker run -it --rm -p 9643:9643 javaee-cafe
 	```
