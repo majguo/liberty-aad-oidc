@@ -9,10 +9,14 @@
 		<feature>appSecurity-2.0</feature>
 	</featureManager>
 
-	<!-- This keystore is used for SSL & JWT. Make sure it imported root certificate of 
-		host "login.microsoftonline.com" for SSL traffic -->
-	<keyStore id="defaultKeyStore" password="${DEFAULT_KEYSTORE_PASS}"
-		location="${server.config.dir}/resources/security/key.jks" type="JKS" />
+	<!-- defaultKeyStore is pre-generated and used for SSL & JWT. Java cacerts is used for defaultTrustStore. 
+		Because there are http requests within application server via SSL, the defaultKeyStore must be 
+		imported to defaultTrustStore before server is running. See Dockerfile for more information. -->
+    <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="defaultTrustStore" />
+    <keyStore id="defaultKeyStore" location="${server.config.dir}/resources/security/${DEFAULT_KEYSTORE_NAME}" 
+		type="JKS" password="${DEFAULT_KEYSTORE_PASS}" />
+    <keyStore id="defaultTrustStore" location="${JAVA_HOME}/lib/security/cacerts" 
+		type="JKS" password="${JAVA_TRUSTSTORE_PASS}" />
 
 	<openidConnectClient id="liberty-aad-oidc-javaeecafe"
 		clientId="${CLIENT_ID}"
