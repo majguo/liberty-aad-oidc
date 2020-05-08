@@ -21,7 +21,7 @@ The`javaee-cafe` demo shows using Java EE thin wars with Docker repositories, la
   * [Optional] Add groups claim > Select Security groups then select Group ID for each token type
 
 ## Build & run application
-## Start the Database with Docker
+### Start the Database with Docker
 The first step to getting the application running is getting the database up. Please follow the instructions below to get the database running.
 
 * Ensure that all running Docker containers are shut down. You may want to do this by restarting Docker. The demo depends on containers started in the exact order as below (this will be less of a problem when we start using Kubernetes).
@@ -32,7 +32,7 @@ docker run -it --rm --name javaee-cafe-db -v pgdata:/var/lib/postgresql/data -p 
 ```
 * The database is now ready (to stop it, simply press Control-C after the Java EE application is shutdown).
 
-## Start the Application with Docker
+### Start the Application with Docker
 The next step is to get the application up and running. Follow the steps below to do so.
 
 * Clone [this repo](https://github.com/majguo/liberty-aad-oidc) if not done before
