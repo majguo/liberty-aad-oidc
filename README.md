@@ -23,7 +23,6 @@ The`javaee-cafe` demo shows using Java EE thin wars with Docker repositories, la
 ## Build & run application
 ### Start the Database with Docker
 The first step to getting the application running is getting the database up. Please follow the instructions below to get the database running.
-
 * Ensure that all running Docker containers are shut down. You may want to do this by restarting Docker. The demo depends on containers started in the exact order as below (this will be less of a problem when we start using Kubernetes).
 * Make sure Docker is running. Open a console.
 * Enter the following command and wait for the database to come up fully.
@@ -34,10 +33,10 @@ docker run -it --rm --name javaee-cafe-db -v pgdata:/var/lib/postgresql/data -p 
 
 ### Start the Application with Docker
 The next step is to get the application up and running. Follow the steps below to do so.
-
 * Clone [this repo](https://github.com/majguo/liberty-aad-oidc) if not done before
 * Change directory to `<path-to-repo>/javaee-cafe`
 * Run `mvn clean package`. The generated war file is under `./target`
+* Change directory back to `<path-to-repo>`
 * You should explore the Dockerfile in this directory used to build the Docker image. It simply starts from the `websphere-liberty` image, generate default keystore & import it to JAVA cacerts, adds the `javaee-cafe.war` from `./target` into the `apps` directory, copies the PostgreSqQL driver `postgresql-42.2.4.jar` into the `shared/resources` directory and replaces the defaultServer configuration file `server.xml`.
 * Notice how the data source properties in the `server.xml` file looks like:
 <pre>serverName="172.17.0.2"
@@ -46,17 +45,16 @@ databaseName="postgres"
 user="postgres"
 password=""</pre>
 * Note, we are depending on the fact that the database is the first container to start and has the IP 172.17.0.2. For Mac and Windows users the serverName could be changed to `host.docker.internal`. That will make the container start order less significant.
-* Change directory to `<path-to-repo>`
 * Open a console. Build a Docker image tagged `javaee-cafe` by running the following command after replacing `<...>` with valid values:
-	```
-	docker build -t javaee-cafe --build-arg defaultKeyStorePass=<...> --build-arg javaTrustStorePass=<...> .
-	```
+  ```
+  docker build -t javaee-cafe --build-arg defaultKeyStorePass=<...> --build-arg javaTrustStorePass=<...> .
+  ```
   * `defaultKeyStorePass`: specify password for default keystore
   * `javaTrustStorePass`: password for JAVA cacerts which is used as default trust store, located in `${JAVA_HOME}/lib/security/cacerts`, the default password is `changeit`
 * To run the newly built image, replace `<...>` with the valid values and execute the command:
-	```
-	docker run -it --rm -p 9643:9643 -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
-	```
+  ```
+  docker run -it --rm -p 9643:9643 -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
+  ```
   * `CLIENT_ID`: the one you logged down in previous step
   * `CLIENT_SECRET`: the one you logged down in previous step
   * `TENANT_ID`: the one you logged down in previous step
