@@ -26,9 +26,9 @@ The first step to getting the application running is getting the database up. Pl
 * Ensure that all running Docker containers are shut down. You may want to do this by restarting Docker. The demo depends on containers started in the exact order as below (this will be less of a problem when we start using Kubernetes).
 * Make sure Docker is running. Open a console.
 * Enter the following command and wait for the database to come up fully.
-```
-docker run -it --rm --name javaee-cafe-db -v pgdata:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_HOST_AUTH_METHOD=trust postgres
-```
+  ```
+  docker run -it --rm --name javaee-cafe-db -v pgdata:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_HOST_AUTH_METHOD=trust postgres
+  ```
 * The database is now ready (to stop it, simply press Control-C after the Java EE application is shutdown).
 
 ### Start the Application with Docker
