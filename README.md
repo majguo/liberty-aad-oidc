@@ -39,11 +39,13 @@ The next step is to get the application up and running. Follow the steps below t
 * Change directory back to `<path-to-repo>`
 * You should explore the Dockerfile in this directory used to build the Docker image. It simply starts from the `websphere-liberty` image, generate default keystore & import it to JAVA cacerts, adds the `javaee-cafe.war` from `./target` into the `apps` directory, copies the PostgreSqQL driver `postgresql-42.2.4.jar` into the `shared/resources` directory and replaces the defaultServer configuration file `server.xml`.
 * Notice how the data source properties in the `server.xml` file looks like:
-<pre>serverName="172.17.0.2"
-portNumber="5432"
-databaseName="postgres"
-user="postgres"
-password=""</pre>
+  ```
+  serverName="172.17.0.2"
+  portNumber="5432"
+  databaseName="postgres"
+  user="postgres"
+  password=""
+  ```
 * Note, we are depending on the fact that the database is the first container to start and has the IP 172.17.0.2. For Mac and Windows users the serverName could be changed to `host.docker.internal`. That will make the container start order less significant.
 * Open a console. Build a Docker image tagged `javaee-cafe` by running the following command after replacing `<...>` with valid values:
   ```
@@ -55,9 +57,9 @@ password=""</pre>
   ```
   docker run -it --rm -p 9643:9643 -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
-  * `CLIENT_ID`: the one you logged down in previous step
-  * `CLIENT_SECRET`: the one you logged down in previous step
-  * `TENANT_ID`: the one you logged down in previous step
+  * `CLIENT_ID`: the one you logged down before
+  * `CLIENT_SECRET`: the one you logged down before
+  * `TENANT_ID`: the one you logged down before
 * Wait for WebSphere Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 * Once the application starts, you can visit the JSF client at [https://localhost:9643/javaee-cafe](https://localhost:9643/javaee-cafe).
 
