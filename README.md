@@ -61,7 +61,9 @@ The next step is to get the application up and running. Follow the steps below t
   * `CLIENT_SECRET`: the one you logged down before
   * `TENANT_ID`: the one you logged down before
 * Wait for WebSphere Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
-* Once the application starts, you can visit the JSF client at [https://localhost:9643/javaee-cafe](https://localhost:9643/javaee-cafe) or [http://localhost:9080/javaee-cafe](http://localhost:9080/javaee-cafe).
+* Once the application starts, you can visit the JSF client at
+  * [https://localhost:9643/javaee-cafe](https://localhost:9643/javaee-cafe)
+  * [http://localhost:9080/javaee-cafe](http://localhost:9080/javaee-cafe)
 
 ## References
 * [Securing Open Liberty apps and microservices with MicroProfile JWT and Social Media login](https://openliberty.io/blog/2019/08/29/securing-microservices-social-login-jwt.html)
