@@ -49,9 +49,10 @@ The next step is to get the application up and running. Follow the steps below t
 * Note, we are depending on the fact that the database is the first container to start and has the IP 172.17.0.2. For Mac and Windows users the serverName could be changed to `host.docker.internal`. That will make the container start order less significant.
 * Open a console. Build a Docker image tagged `javaee-cafe` by running the following command after replacing `<...>` with valid values:
   ```
-  docker build -t javaee-cafe --build-arg defaultKeyStorePass=<...> --build-arg javaTrustStorePass=<...> .
+  docker build -t javaee-cafe --build-arg defaultKeyStoreName=<...> --build-arg defaultKeyStorePass=<...> --build-arg javaTrustStorePass=<...> .
   ```
-  * `defaultKeyStorePass`: specify password for default keystore
+  * `defaultKeyStoreName`: the name of default key store, which is prepared by user and should be located in `<path-to-repo>` directory. The password for key store and key requires to be same. For demo/testing purpose, you can use [keytool](https://www.sslshopper.com/article-most-common-java-keytool-keystore-commands.html) to generate a default key store with a self-signed certificate.
+  * `defaultKeyStorePass`: password for default key store
   * `javaTrustStorePass`: password for JAVA cacerts which is used as default trust store, located in `${JAVA_HOME}/lib/security/cacerts`, the default password is `changeit`
 * To run the newly built image, replace `<...>` with the valid values and execute the command:
   ```
