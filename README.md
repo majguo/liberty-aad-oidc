@@ -51,8 +51,9 @@ The next step is to get the application up and running. Follow the steps below t
   ```
   docker build -t javaee-cafe --build-arg defaultKeyStoreName=<...> --build-arg defaultKeyStorePass=<...> --build-arg javaTrustStorePass=<...> .
   ```
-  * `defaultKeyStoreName`: the name of default key store, which is prepared by user and should be located in `<path-to-repo>` directory. The password for key store and key requires to be same. For demo/testing purpose, you can use [keytool](https://www.sslshopper.com/article-most-common-java-keytool-keystore-commands.html) to generate a default key store with a self-signed certificate.
-  * `defaultKeyStorePass`: password for default key store
+  * `defaultKeyStoreName`: the name of default keystore, which is prepared by user and should be located in `<path-to-repo>` directory. <b>The password for keystore and key requires to be same</b>, the type of keystore should be <b>JKS</b>. For demo purpose, run the following `keytool` command to generate a default keystore `key.jks` with a self-signed certificate:
+    * `keytool -genkeypair -keyalg RSA -storetype jks -keystore key.jks`
+  * `defaultKeyStorePass`: password for default keystore
   * `javaTrustStorePass`: password for JAVA cacerts which is used as default trust store, located in `${JAVA_HOME}/lib/security/cacerts`, the default password is `changeit`
 * To run the newly built image, replace `<...>` with the valid values and execute the command:
   ```
