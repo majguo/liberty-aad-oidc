@@ -55,7 +55,7 @@ The next step is to get the application up and running. Follow the steps below t
   * `javaTrustStorePass`: password for JAVA cacerts which is used as default trust store, located in `${JAVA_HOME}/lib/security/cacerts`, the default password is `changeit`
 * To run the newly built image, replace `<...>` with the valid values and execute the command:
   ```
-  docker run -it --rm -p 9643:9643 -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
+  docker run -it --rm -p 9080:9080 -p 9643:9643 -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
   * `CLIENT_ID`: the one you logged down before
   * `CLIENT_SECRET`: the one you logged down before
