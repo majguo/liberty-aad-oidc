@@ -28,3 +28,7 @@ target
 .settings
 *.versionsBackup
 .classpath
+
+# Ignore JKS keystore provided by user
+*.jks
+*.JKS
