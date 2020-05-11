@@ -22,8 +22,9 @@ The`javaee-cafe` demo shows using Java EE thin wars with Docker repositories, la
 
 ## Build & run application
 ### Start the Database instance
-#### Start with Docker
 The first step to getting the application running is getting the database up. Please follow the instructions below to get the database running.
+#### Start with Docker
+This is the easiest way to start PostgreSQL server with your local Docker:
 * Ensure that all running Docker containers are shut down. You may want to do this by restarting Docker. The demo depends on containers started in the exact order as below (this will be less of a problem when we start using Kubernetes).
 * Make sure Docker is running. Open a console.
 * Enter the following command and wait for the database to come up fully.
@@ -32,10 +33,10 @@ The first step to getting the application running is getting the database up. Pl
   ```
 * The database is now ready (to stop it, simply press Control-C after the Java EE application is shutdown).
   * Note, we are depending on the fact that the database is the first container to start and has the IP `172.17.0.2`. For Mac and Windows users the serverName could be changed to `host.docker.internal`. That will make the container start order less significant.
-  * The PostgreSQL server running as Docker container will generate a user named `postgres` with empty password. You will use them to connect to PostgreSQL server when starting applicatoin later
+  * The PostgreSQL server running as Docker container will generate a user named `postgres` with empty password. You will use them to connect to PostgreSQL server when starting applicatoin later.
 
 #### Start with Azure Database for PostgreSQL
-Instead of running PostgreSQL server as local Docker container, you can deploy and run PostgreSQL server on Azure with the following instructions:
+Instead of running PostgreSQL server as local Docker container, you can also deploy and run PostgreSQL server on Azure:
 * Go to [Azure Database for PostgreSQL ](https://ms.portal.azure.com/#create/Microsoft.PostgreSQLServer)
 * Select "Single server" > Create
 * Specify necessary inputs in "Basic" tab, log down value of `Password` specified for Administrator account
