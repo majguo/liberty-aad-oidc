@@ -59,6 +59,8 @@ The next step is to get the application up and running. Follow the steps below t
   ```
   docker run -it --rm -p 9080:9080 -p 9643:9643 -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
+  * `DEFAULT_KEYSTORE_PASS`: provide same value for `defaultKeyStorePass`, which was mentioned above
+  * `JAVA_TRUSTSTORE_PASS`: provide same value for `javaTrustStorePass`, which was mentioned above
   * `CLIENT_ID`: the one you logged down before
   * `CLIENT_SECRET`: the one you logged down before
   * `TENANT_ID`: the one you logged down before

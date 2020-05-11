@@ -4,13 +4,11 @@ FROM websphere-liberty
 ENV KEYSTORE_REQUIRED "false"
 
 # define build variables which will be passed in during image building time
-# also assign them to environment variables which will be used during container runtime 
+# also assign defaultKeyStoreName to env variable which will be used during container runtime 
 ARG defaultKeyStoreName
 ENV DEFAULT_KEYSTORE_NAME=${defaultKeyStoreName}
 ARG defaultKeyStorePass
-ENV DEFAULT_KEYSTORE_PASS=${defaultKeyStorePass}
 ARG javaTrustStorePass
-ENV JAVA_TRUSTSTORE_PASS=${javaTrustStorePass}
 
 # copy user prepared default keystore
 COPY --chown=1001:0 ${defaultKeyStoreName} /config/resources/security/
