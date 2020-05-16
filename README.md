@@ -1,4 +1,4 @@
-# Secure Liberty Application with Azure AD OpenID Connect
+# Securing Open Liberty/WebSphere Liberty Applications with Azure Active Directory via OpenID Connect
 
 ## Introduction
 This project provides a demo on how to secure your application which is running on WebSphere Liberty server by using Azure Active Directory OpenID Connect.</br>
