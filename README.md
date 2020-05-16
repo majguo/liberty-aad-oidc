@@ -1,8 +1,7 @@
 # Securing Open Liberty/WebSphere Liberty Applications with Azure Active Directory via OpenID Connect
 
 ## Introduction
-This project provides a demo on how to secure your application which is running on WebSphere Liberty server by using Azure Active Directory OpenID Connect.</br>
-The`javaee-cafe` demo shows using Java EE thin wars with Docker repositories, layering, and caching. It uses Liberty server under Docker using the `websphere-liberty` image that is available from the online Docker Hub repository. The following is how you run the demo.
+This project demonstrates how to secure your Java EE application on Open Liberty/WebSphere Liberty using Azure Active Directory via OpenID Connect. The following is how you run the demo.
 
 ## Prerequisites
 * Register an [Azure subscription](https://azure.microsoft.com/en-us/)
