@@ -37,11 +37,10 @@ The next step is to get the application up and running. Follow the steps below t
   keytool -genkeypair -keyalg RSA -storetype jks -keystore key.jks
   ```
 * Build a Docker image tagged `javaee-cafe` by running the following command. These are the parameters required:
-  * `keyStoreName`: the name of default keystore, which is prepared by user and should be located in `<path-to-repo>` directory.
-  * `defaultKeyStorePass`: password for default keystore
-  * `javaTrustStorePass`: password for JAVA cacerts which is used as default trust store, located in `${JAVA_HOME}/lib/security/cacerts`, the default password is `changeit`
+  * `keyStoreName`: key.jks from above.
+  * `keyStorePassword`: The key store password from above.
   ```
-  docker build -t javaee-cafe --build-arg keyStoreName=<...> --build-arg keyStorePassword=<...> .
+  docker build -t javaee-cafe --build-arg keyStoreName=key.jks --build-arg keyStorePassword=<...> .
   ```
 * To run the newly built image, replace `<...>` with the valid values and execute the command:
   ```
