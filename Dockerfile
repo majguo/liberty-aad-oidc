@@ -1,4 +1,7 @@
-FROM websphere-liberty
+FROM open-liberty
+
+# Use this if WebSphere Liberty is desired.
+# FROM websphere-liberty
 
 # Tell Liberty not to generate a default keystore.
 ENV KEYSTORE_REQUIRED "false"
