@@ -8,7 +8,6 @@ ENV KEYSTORE_REQUIRED "false"
 ARG defaultKeyStoreName
 ENV DEFAULT_KEYSTORE_NAME=${defaultKeyStoreName}
 ARG defaultKeyStorePass
-ARG javaTrustStorePass
 
 # copy user prepared default keystore
 COPY --chown=1001:0 ${defaultKeyStoreName} /config/resources/security/
@@ -20,7 +19,7 @@ RUN  $JAVA_HOME/bin/keytool -importkeystore -noprompt \
     -srckeystore /config/resources/security/${defaultKeyStoreName} \
     -srcstorepass ${defaultKeyStorePass} \
     -destkeystore $JAVA_HOME/lib/security/cacerts \
-    -deststorepass ${javaTrustStorePass}
+    -deststorepass changeit
 USER 1001
 
 # copy other artifacts

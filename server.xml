@@ -20,7 +20,7 @@
 		type="JKS" password="${DEFAULT_KEYSTORE_PASS}" />
 	<keyStore id="defaultTrustStore"
 		location="${JAVA_HOME}/lib/security/cacerts" type="JKS"
-		password="${JAVA_TRUSTSTORE_PASS}" />
+		password="changeit" />
 
 	<openidConnectClient
 		id="liberty-aad-oidc-javaeecafe" clientId="${CLIENT_ID}"
@@ -45,9 +45,9 @@
 	<dataSource id="JavaEECafeDB"
 		jdbcDriverRef="postgresql-driver" jndiName="jdbc/JavaEECafeDB"
 		transactional="true" type="javax.sql.ConnectionPoolDataSource">
-		<properties portNumber="5432"
+		<properties databaseName="postgres" portNumber="5432"
 			serverName="${POSTGRESQL_SERVER_NAME}" user="${POSTGRESQL_USER}"
-			password="${POSTGRESQL_PASSWORD}" databaseName="postgres" />
+			password="${POSTGRESQL_PASSWORD}" />
 	</dataSource>
 
 	<jdbcDriver id="postgresql-driver"
