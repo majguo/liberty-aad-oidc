@@ -32,14 +32,17 @@ The next step is to get the application up and running. Follow the steps below t
 * Change directory to `<path-to-repository>/javaee-cafe`.
 * Run `mvn clean package`. This will generate a war deployment under `./target`.
 * Change directory back to `<path-to-repository>`.
+* You will need to create a custom keystore for SSL. Issue the following command to do so.
+  ```
+  keytool -genkeypair -keyalg RSA -storetype jks -keystore key.jks
+  ```
 * Build a Docker image tagged `javaee-cafe` by running the following command. These are the parameters required:
+  * `keyStoreName`: the name of default keystore, which is prepared by user and should be located in `<path-to-repo>` directory. <b>The password for keystore and key requires to be same</b>, the type of keystore should be <b>JKS</b>.
+  * `defaultKeyStorePass`: password for default keystore
+  * `javaTrustStorePass`: password for JAVA cacerts which is used as default trust store, located in `${JAVA_HOME}/lib/security/cacerts`, the default password is `changeit`
   ```
   docker build -t javaee-cafe --build-arg keyStoreName=<...> --build-arg keyStorePassword=<...> .
   ```
-  * `defaultKeyStoreName`: the name of default keystore, which is prepared by user and should be located in `<path-to-repo>` directory. <b>The password for keystore and key requires to be same</b>, the type of keystore should be <b>JKS</b>. For demo purpose, run the following `keytool` command to generate a default keystore `key.jks` with a self-signed certificate:
-    * `keytool -genkeypair -keyalg RSA -storetype jks -keystore key.jks`
-  * `defaultKeyStorePass`: password for default keystore
-  * `javaTrustStorePass`: password for JAVA cacerts which is used as default trust store, located in `${JAVA_HOME}/lib/security/cacerts`, the default password is `changeit`
 * To run the newly built image, replace `<...>` with the valid values and execute the command:
   ```
   docker run -it --rm -p 9080:9080 -p 9643:9643 -e POSTGRESQL_SSL_ENABLED=<...> -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=<...> -e POSTGRESQL_PASSWORD=<...> -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
