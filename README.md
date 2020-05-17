@@ -32,12 +32,12 @@ The next step is to get the application up and running. Follow the steps below t
 * Change directory to `<path-to-repository>/javaee-cafe`.
 * Run `mvn clean package`. This will generate a war deployment under `./target`.
 * Change directory back to `<path-to-repository>`.
-* You will need to create a custom key store for SSL. Issue the following command to do so.
+* You will need to create a custom key store for SSL. Issue the following command to do so. Please use the same password for the key store and key.
   ```
   keytool -genkeypair -keyalg RSA -storetype jks -keystore key.jks
   ```
 * Build a Docker image tagged `javaee-cafe` by running the following command. These are the parameters required:
-  * `keyStoreName`: the name of default keystore, which is prepared by user and should be located in `<path-to-repo>` directory. <b>The password for keystore and key requires to be same</b>, the type of keystore should be <b>JKS</b>.
+  * `keyStoreName`: the name of default keystore, which is prepared by user and should be located in `<path-to-repo>` directory.
   * `defaultKeyStorePass`: password for default keystore
   * `javaTrustStorePass`: password for JAVA cacerts which is used as default trust store, located in `${JAVA_HOME}/lib/security/cacerts`, the default password is `changeit`
   ```
