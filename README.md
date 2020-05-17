@@ -43,23 +43,19 @@ The next step is to get the application up and running. Follow the steps below t
   docker build -t javaee-cafe --build-arg keyStoreName=key.jks --build-arg keyStorePassword=<...> .
   ```
 * To run the newly built image, execute the following command. These are the parameters required:
+  * `POSTGRESQL_SERVER_NAME`: For Mac and Windows users, 'host.docker.internal' may be used. For other operating systems, use the IP 172.17.0.2 (note, this depends on the fact that the database is the first container to start).
+  * `POSTGRESQL_USER`: Use `postgres`.
+  * `POSTGRESQL_PASSWORD`: Keep it empty.
+  * `CLIENT_ID`: The application/client ID you noted down.
+  * `CLIENT_SECRET`: The client secret value you noted down.
+  * `TENANT_ID`: The tenant/directory ID you noted down.
   ```
-  docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=<...> -e POSTGRESQL_PASSWORD=<...> -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
+  docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD= -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
-  * `POSTGRESQL_SSL_ENABLED`: `false` if using PostgreSQL server in local Docker container, `true` if using Azure Database for PostgreSQL
-  * `POSTGRESQL_SERVER_NAME`: `172.17.0.2` if using PostgreSQL server in local Docker container, value of `Data Source` logged down before if using Azure Database for PostgreSQL
-  * `POSTGRESQL_USER`: `postgres` if using PostgreSQL server in local Docker container, value of `User Id` logged down before if using Azure Database for PostgreSQL
-  * `POSTGRESQL_PASSWORD`: keep it empty if using PostgreSQL server in local Docker container, value of `Password` specified for Administrator account logged down before if using Azure Database for PostgreSQL
-  * `DEFAULT_KEYSTORE_PASS`: provide same value for `defaultKeyStorePass`, which was mentioned above
-  * `JAVA_TRUSTSTORE_PASS`: provide same value for `javaTrustStorePass`, which was mentioned above
-  * `CLIENT_ID`: the one you logged down before
-  * `CLIENT_SECRET`: the one you logged down before
-  * `TENANT_ID`: the one you logged down before
 * Wait for WebSphere Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 * Once the application starts, you can visit the JSF client at
-  * [https://localhost:9643/javaee-cafe](https://localhost:9643/javaee-cafe)
+  * [https://localhost:9443/javaee-cafe](https://localhost:9443/javaee-cafe)
   * [http://localhost:9080/javaee-cafe](http://localhost:9080/javaee-cafe)
 
 ## References
-* [Securing Open Liberty apps and microservices with MicroProfile JWT and Social Media login](https://openliberty.io/blog/2019/08/29/securing-microservices-social-login-jwt.html)
 * [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
