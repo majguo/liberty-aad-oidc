@@ -1,7 +1,7 @@
 # Securing Open Liberty/WebSphere Liberty Applications with Azure Active Directory via OpenID Connect
 
 ## Introduction
-This project demonstrates how to secure your Java EE application on Open Liberty/WebSphere Liberty using Azure Active Directory via OpenID Connect. The following is how you run the demo.
+This project demonstrates how to secure your Java EE application on Open Liberty/WebSphere Liberty using Azure Active Directory and OpenID Connect. The following is how you run the demo.
 
 ## Prerequisites
 * Register an [Azure subscription](https://azure.microsoft.com/en-us/)
