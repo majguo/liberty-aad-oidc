@@ -15,9 +15,6 @@ This project demonstrates how to secure your Java EE application on Open Liberty
 * Although this isn't absolutely necessary, you can [create a few Azure Active Directory users](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/add-users-azure-active-directory). You can use these accounts or your own to test the application. Do note down email addresses and passwords.
 * [Create an Azure AD app registration for authentication](https://docs.microsoft.com/en-us/azure/openshift/configure-azure-ad-ui#create-an-azure-active-directory-application-for-authentication) if not existing, log down Application (client) ID & client secret. Fill in <b>Redirect URI</b> with the redirect URI of applicatoins to be deployed later:
   * https://<span></span>localhost:9643/oidcclient/redirect/liberty-aad-oidc-javaeecafe
-* [Configure optional claims](https://docs.microsoft.com/en-us/azure/openshift/configure-azure-ad-ui#configure-optional-claims)
-  * Add optional claim > Select ID then check the email and upn claims
-  * [Optional] Add groups claim > Select Security groups then select Group ID for each token type
 
 ## Build & run application
 ### Start the Database instance
