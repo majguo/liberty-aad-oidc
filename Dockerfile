@@ -1,28 +1,28 @@
 FROM websphere-liberty
 
-# Tell Liberty not to generate a default keystore
+# Tell Liberty not to generate a default keystore.
 ENV KEYSTORE_REQUIRED "false"
 
-# define build variables which will be passed in during image building time
-# also assign defaultKeyStoreName to env variable which will be used during container runtime 
-ARG defaultKeyStoreName
-ENV DEFAULT_KEYSTORE_NAME=${defaultKeyStoreName}
-ARG defaultKeyStorePass
+# Define build variables which will be passed in during image building time.
+# Also assign keyStoreName to environment variable which will be used during container runtime. 
+ARG keyStoreName
+ENV KEYSTORE_NAME=${keyStoreName}
+ARG keyStorePassword
 
-# copy user prepared default keystore
-COPY --chown=1001:0 ${defaultKeyStoreName} /config/resources/security/
+# Copy user supplied keystore.
+COPY --chown=1001:0 ${keyStoreName} /config/resources/security/
 
-# import the default keystore into JAVA cacerts to 
-# enable http requests within application server via SSL
+# Import the custom keystore into Java CA certificates to 
+# enable REST invocations within the application over SSL.
 USER root
 RUN  $JAVA_HOME/bin/keytool -importkeystore -noprompt \
-    -srckeystore /config/resources/security/${defaultKeyStoreName} \
-    -srcstorepass ${defaultKeyStorePass} \
+    -srckeystore /config/resources/security/${keyStoreName} \
+    -srcstorepass ${keyStorePassword} \
     -destkeystore $JAVA_HOME/lib/security/cacerts \
     -deststorepass changeit
 USER 1001
 
-# copy other artifacts
+# Copy deployment artifacts.
 COPY --chown=1001:0 postgresql-42.2.4.jar /opt/ibm/wlp/usr/shared/resources/
 COPY --chown=1001:0 server.xml /config/
 COPY --chown=1001:0 javaee-cafe/target/javaee-cafe.war /config/apps/

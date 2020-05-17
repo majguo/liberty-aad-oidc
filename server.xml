@@ -9,15 +9,16 @@
 		<feature>appSecurity-2.0</feature>
 	</featureManager>
 
-	<!-- defaultKeyStore is pre-generated and used for SSL & JWT. Java cacerts 
-		is used for defaultTrustStore. Because there are http requests within application 
-		server via SSL, the defaultKeyStore must be imported to defaultTrustStore 
-		before server is running. See Dockerfile for more information. -->
+	<!-- A custom key store is user supplied and used for SSL. Java CA certificates 
+		are used as the default trust store (Microsoft is a registered CA and the 
+		Microsoft certificate is used for Azure Active Directory). Because there 
+		are REST invocations within the application via SSL, the custom key store 
+		must be imported to the trust store. See the Dockerfile for more information. -->
 	<ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore"
 		trustStoreRef="defaultTrustStore" />
 	<keyStore id="defaultKeyStore"
-		location="${server.config.dir}/resources/security/${DEFAULT_KEYSTORE_NAME}"
-		type="JKS" password="${DEFAULT_KEYSTORE_PASS}" />
+		location="${server.config.dir}/resources/security/${KEYSTORE_NAME}"
+		type="JKS" password="${KEYSTORE_PASSWORD}" />
 	<keyStore id="defaultTrustStore"
 		location="${JAVA_HOME}/lib/security/cacerts" type="JKS"
 		password="changeit" />
