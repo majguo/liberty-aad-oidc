@@ -32,7 +32,7 @@ The next step is to get the application up and running. Follow the steps below t
 * Change directory to `<path-to-repository>/javaee-cafe`.
 * Run `mvn clean package`. This will generate a war deployment under `./target`.
 * Change directory back to `<path-to-repository>`.
-* You will need to create a custom keystore for SSL. Issue the following command to do so.
+* You will need to create a custom key store for SSL. Issue the following command to do so.
   ```
   keytool -genkeypair -keyalg RSA -storetype jks -keystore key.jks
   ```
