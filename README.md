@@ -42,9 +42,9 @@ The next step is to get the application up and running. Follow the steps below t
   ```
   docker build -t javaee-cafe --build-arg keyStoreName=key.jks --build-arg keyStorePassword=<...> .
   ```
-* To run the newly built image, replace `<...>` with the valid values and execute the command:
+* To run the newly built image, execute the following command. These are the parameters required:
   ```
-  docker run -it --rm -p 9080:9080 -p 9643:9643 -e POSTGRESQL_SSL_ENABLED=<...> -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=<...> -e POSTGRESQL_PASSWORD=<...> -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
+  docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=<...> -e POSTGRESQL_PASSWORD=<...> -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
   * `POSTGRESQL_SSL_ENABLED`: `false` if using PostgreSQL server in local Docker container, `true` if using Azure Database for PostgreSQL
   * `POSTGRESQL_SERVER_NAME`: `172.17.0.2` if using PostgreSQL server in local Docker container, value of `Data Source` logged down before if using Azure Database for PostgreSQL
