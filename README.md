@@ -16,12 +16,9 @@ This project demonstrates how to secure your Java EE application on Open Liberty
 * You will need to [create a new application registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in Azure Active Directory. Please specify the redirect URI to be: https://localhost:9443/oidcclient/redirect/liberty-aad-oidc-javaeecafe. Please note down the application (client) ID.
 * You will need to create a new client secret. In the newly created application registration, find 'Certificates & secrets'. Select 'New client secret'. Provide a desciption and hit 'Add'. Note down the generated client secret value.
 
-## Build & run application
-### Start the Database instance
+## Start the Database instance
 The first step to getting the application running is getting the database up. Please follow the instructions below to get the database running.
-#### Start with Docker
-This is the easiest way to start PostgreSQL server with your local Docker:
-* Ensure that all running Docker containers are shut down. You may want to do this by restarting Docker. The demo depends on containers started in the exact order as below (this will be less of a problem when we start using Kubernetes).
+* Ensure that all running Docker containers are shut down. You may want to do this by restarting Docker. The demo depends on containers started in a specific order.
 * Make sure Docker is running. Open a console.
 * Enter the following command and wait for the database to come up fully.
   ```
@@ -29,24 +26,11 @@ This is the easiest way to start PostgreSQL server with your local Docker:
   ```
 * The database is now ready (to stop it, simply press Control-C after the Java EE application is shutdown).
   * Note, we are depending on the fact that the database is the first container to start and has the IP `172.17.0.2`. For Mac and Windows users the serverName could be changed to `host.docker.internal`. That will make the container start order less significant.
-  * The PostgreSQL server running as Docker container will generate a user named `postgres` with empty password. You will use them to connect to PostgreSQL server when starting applicatoin later.
-
-#### Start with Azure Database for PostgreSQL
-Instead of running PostgreSQL server as local Docker container, you can also deploy and run PostgreSQL server on Azure:
-* Go to [Azure Database for PostgreSQL ](https://ms.portal.azure.com/#create/Microsoft.PostgreSQLServer)
-* Select "Single server" > Create
-* Specify necessary inputs in "Basic" tab, log down value of `Password` specified for Administrator account
-* Leave others as defaults > Next: Tags > Next: Review + Create > Create
-* Wait a few minutes until the deployment completes > Go to new instance of Azure Database for PostgreSQL server
-* Switch to Settings > Connection security > Create a firewall rule by adding "0.0.0.0 - 255.255.255.255"
-  * Note: use this rule only temporarily and only on test clusters that do not contain sensitive data. You can replace it with a new rule that only allowing IP address of your local applicatoin container later for security consideration
-* Switch to Settings > Connection strings > Copy connection strings for Web App
-* Log down value of `Data Source` & `User Id`, which will be used to connect to PostgreSQL server when starting applicatoin later 
 
 ### Start the Application with Docker
 The next step is to get the application up and running. Follow the steps below to do so.
-* Clone [this repo](https://github.com/majguo/liberty-aad-oidc) if not done before
-* Change directory to `<path-to-repo>/javaee-cafe`
+* Open a command prompt. Navigate to where you have this repository downloaded on your local machine.
+* Change directory to `<path-to-repository>/javaee-cafe`
 * Run `mvn clean package`. The generated war file is under `./target`
 * Change directory back to `<path-to-repo>`
 * You should explore the Dockerfile in this directory used to build the Docker image. It simply starts from the `websphere-liberty` image, copy the pre-generated default keystore & import it to JAVA cacerts, adds the `javaee-cafe.war` from `./target` into the `apps` directory, copies the PostgreSqQL driver `postgresql-42.2.4.jar` into the `shared/resources` directory and replaces the defaultServer configuration file `server.xml`.
