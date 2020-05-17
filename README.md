@@ -4,10 +4,11 @@
 This project demonstrates how to secure your Java EE application on Open Liberty/WebSphere Liberty using Azure Active Directory and OpenID Connect. The following is how you run the demo.
 
 ## Prerequisites
-* Register an [Azure subscription](https://azure.microsoft.com/en-us/)
-* Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
-* Install [Oracle JDK 8](https://www.oracle.com/java/technologies/javase-jdk8-downloads.html)
-* Download [Maven](https://maven.apache.org/download.cgi)
+* Install Java SE 8 (we used [AdoptOpenJDK OpenJDK 8 LTS/HotSpot](https://adoptopenjdk.net)).
+* Install [Maven](https://maven.apache.org/download.cgi).
+* Install [Docker](https://docs.docker.com/get-docker/) for your OS.
+* You will need an Azure subscription. If you don't have one, you can get one for free for one year [here](https://azure.microsoft.com/en-us/free).
+* Download this repository somewhere in your file system (easiest way might be to download as a zip and extract).
 
 ## Setup Azure Active Directory
 * [Create a new Azure AD tenant](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-create-new-tenant#create-a-new-azure-ad-tenant) if not existing, log down Directory (tenant) ID
