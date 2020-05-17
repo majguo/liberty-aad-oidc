@@ -52,7 +52,7 @@
 		libraryRef="postgresql-library" />
 
 	<library id="postgresql-library">
-		<fileset dir="${shared.resource.dir}" id="PostgreSQLFileset"
+		<fileset dir="/opt/ibm/wlp/usr/shared/resources/" id="PostgreSQLFileset"
 			includes="postgresql-42.2.4.jar" />
 	</library>
 
