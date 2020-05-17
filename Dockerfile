@@ -1,6 +1,6 @@
 FROM websphere-liberty
 
-# tell WebSphere Liberty not to generate a default keystore
+# Tell Liberty not to generate a default keystore
 ENV KEYSTORE_REQUIRED "false"
 
 # define build variables which will be passed in during image building time
