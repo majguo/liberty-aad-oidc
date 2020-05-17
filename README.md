@@ -28,28 +28,21 @@ The first step to getting the application running is getting the database up. Pl
 
 ### Start the Application with Docker
 The next step is to get the application up and running. Follow the steps below to do so.
-* Open a command prompt. Navigate to where you have this repository downloaded on your local machine.
-* Change directory to `<path-to-repository>/javaee-cafe`
-* Run `mvn clean package`. The generated war file is under `./target`
-* Change directory back to `<path-to-repo>`
-* You should explore the Dockerfile in this directory used to build the Docker image. It simply starts from the `websphere-liberty` image, copy the pre-generated default keystore & import it to JAVA cacerts, adds the `javaee-cafe.war` from `./target` into the `apps` directory, copies the PostgreSqQL driver `postgresql-42.2.4.jar` into the `shared/resources` directory and replaces the defaultServer configuration file `server.xml`.
-* Notice how the data source properties in the `server.xml` file looks like:
+* Open a console. Navigate to where you have this repository downloaded on your local machine.
+* Change directory to `<path-to-repository>/javaee-cafe`.
+* Run `mvn clean package`. This will generate a war deployment under `./target`.
+* Change directory back to `<path-to-repository>`.
+* You will need to create a custom key store for SSL. Issue the following command to do so.
   ```
-  databaseName="postgres"
-  portNumber="5432"
-  ssl="${POSTGRESQL_SSL_ENABLED}"         # configured during container runtime
-  serverName="${POSTGRESQL_SERVER_NAME}"  # configured during container runtime 
-  user="${POSTGRESQL_USER}"               # configured during container runtime
-  password="${POSTGRESQL_PASSWORD}"       # configured during container runtime
+  keytool -genkeypair -keyalg RSA -storetype jks -keystore key.jks
   ```
-* Open a console. Build a Docker image tagged `javaee-cafe` by running the following command after replacing `<...>` with valid values:
-  ```
-  docker build -t javaee-cafe --build-arg defaultKeyStoreName=<...> --build-arg defaultKeyStorePass=<...> --build-arg javaTrustStorePass=<...> .
-  ```
-  * `defaultKeyStoreName`: the name of default keystore, which is prepared by user and should be located in `<path-to-repo>` directory. <b>The password for keystore and key requires to be same</b>, the type of keystore should be <b>JKS</b>. For demo purpose, run the following `keytool` command to generate a default keystore `key.jks` with a self-signed certificate:
-    * `keytool -genkeypair -keyalg RSA -storetype jks -keystore key.jks`
+* Build a Docker image tagged `javaee-cafe` by running the following command. These are the parameters required:
+  * `keyStoreName`: the name of default keystore, which is prepared by user and should be located in `<path-to-repo>` directory. <b>The password for keystore and key requires to be same</b>, the type of keystore should be <b>JKS</b>.
   * `defaultKeyStorePass`: password for default keystore
   * `javaTrustStorePass`: password for JAVA cacerts which is used as default trust store, located in `${JAVA_HOME}/lib/security/cacerts`, the default password is `changeit`
+  ```
+  docker build -t javaee-cafe --build-arg keyStoreName=<...> --build-arg keyStorePassword=<...> .
+  ```
 * To run the newly built image, replace `<...>` with the valid values and execute the command:
   ```
   docker run -it --rm -p 9080:9080 -p 9643:9643 -e POSTGRESQL_SSL_ENABLED=<...> -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=<...> -e POSTGRESQL_PASSWORD=<...> -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
