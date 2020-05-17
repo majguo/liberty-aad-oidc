@@ -8,6 +8,7 @@ ENV KEYSTORE_REQUIRED "false"
 ARG keyStoreName
 ENV KEYSTORE_NAME=${keyStoreName}
 ARG keyStorePassword
+ENV KEYSTORE_PASSWORD=${keyStorePassword}
 
 # Copy user supplied keystore.
 COPY --chown=1001:0 ${keyStoreName} /config/resources/security/
