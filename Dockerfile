@@ -3,6 +3,14 @@ FROM open-liberty
 # Use this if WebSphere Liberty is desired.
 # FROM websphere-liberty
 
+# We need this to set time zone correctly. Open ID Connect will not
+# work reliably otherwise.
+USER root
+RUN apt update
+RUN export DEBIAN_FRONTEND=noninteractive
+RUN apt-get install -y tzdata
+USER 1001
+
 # Tell Liberty not to generate a default keystore.
 ENV KEYSTORE_REQUIRED "false"
 
