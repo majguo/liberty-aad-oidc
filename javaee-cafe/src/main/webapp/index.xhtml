@@ -17,14 +17,14 @@
 		<div class="container">
 			<h2>
 				<h:outputFormat value="#{messages.welcome}">
-				    <f:param value="#{cafe.loggedOnUser}" />
+					<f:param value="#{cafe.loggedOnUser}" />
 				</h:outputFormat>
 			</h2>
 			<h3>
 				<h:outputText value="#{messages.ourMenu}" />
 			</h3>
-			<h:dataTable id="coffeeList" value="#{cafe.coffeeList}"
-				border="1" var="coffee" styleClass="table">
+			<h:dataTable id="coffeeList" value="#{cafe.coffeeList}" border="1"
+				var="coffee" styleClass="table">
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="#{messages.id}" />

@@ -39,6 +39,7 @@
         <role-name>users</role-name>
     </security-role>
 
+    <!-- The REST resources are unsecured. -->
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>rest</web-resource-name>

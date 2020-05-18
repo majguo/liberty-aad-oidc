@@ -32,3 +32,4 @@ target
 # Ignore JKS keystore provided by user
 *.jks
 *.JKS
+javaee-cafe/.metadata/src/main/webapp/WEB-INF/faces-config.pageflow
