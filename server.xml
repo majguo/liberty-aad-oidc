@@ -24,7 +24,9 @@
 		password="changeit" />
 
 	<openidConnectClient
-		id="liberty-aad-oidc-javaeecafe" clientId="${CLIENT_ID}"
+		id="liberty-aad-oidc-javaeecafe" 
+		scope="openid profile email"
+		clientId="${CLIENT_ID}"
 		clientSecret="${CLIENT_SECRET}"
 		discoveryEndpointUrl="https://login.microsoftonline.com/${TENANT_ID}/v2.0/.well-known/openid-configuration"
 		signatureAlgorithm="RS256" userIdentityToCreateSubject="upn"
