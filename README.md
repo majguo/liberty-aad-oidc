@@ -52,7 +52,7 @@ The next step is to get the application up and running. Follow the steps below t
   ```
   docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD="" -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
-* Wait for WebSphere Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
+* Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 * Once the application starts, you can visit the JSF client at
   * [https://localhost:9443/javaee-cafe](https://localhost:9443/javaee-cafe)
   * [http://localhost:9080/javaee-cafe](http://localhost:9080/javaee-cafe)
