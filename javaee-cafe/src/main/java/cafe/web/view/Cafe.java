@@ -10,9 +10,11 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
+import javax.security.enterprise.SecurityContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -35,6 +37,9 @@ public class Cafe implements Serializable {
 	private String baseUri;
 	private transient Client client;
 
+	@Inject
+	private transient SecurityContext securityContext;
+
 	@NotNull
 	@NotEmpty
 	protected String name;
@@ -42,8 +47,6 @@ public class Cafe implements Serializable {
 	protected Double price;
 	protected List<Coffee> coffeeList;
 
-	protected String loggedOnUser;
-	
 	public String getName() {
 		return name;
 	}
@@ -65,26 +68,26 @@ public class Cafe implements Serializable {
 	}
 
 	public String getLoggedOnUser() {
-        return loggedOnUser;
-    }
+		return securityContext.getCallerPrincipal().getName();
+	}
 
-    @PostConstruct
+	@PostConstruct
 	private void init() {
 		try {
-		    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		    loggedOnUser = request.getUserPrincipal().getName();
-		    
-		    InetAddress inetAddress = InetAddress.getByName(request.getServerName());
+			HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
+					.getRequest();
+
+			InetAddress inetAddress = InetAddress.getByName(request.getServerName());
 
 			baseUri = FacesContext.getCurrentInstance().getExternalContext().getRequestScheme() + "://"
 					+ inetAddress.getHostName() + ":"
 					+ FacesContext.getCurrentInstance().getExternalContext().getRequestServerPort()
 					+ "/javaee-cafe/rest/coffees";
-            this.client = ClientBuilder.newBuilder().hostnameVerifier(new HostnameVerifier() {
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            }).build();
+			this.client = ClientBuilder.newBuilder().hostnameVerifier(new HostnameVerifier() {
+				public boolean verify(String hostname, SSLSession session) {
+					return true;
+				}
+			}).build();
 			this.getAllCoffees();
 		} catch (IllegalArgumentException | NullPointerException | WebApplicationException | UnknownHostException ex) {
 			logger.severe("Processing of HTTP response failed.");
