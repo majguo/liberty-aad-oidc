@@ -7,7 +7,7 @@ FROM open-liberty
 ENV KEYSTORE_REQUIRED "false"
 
 # Define build variables which will be passed in during image building time.
-# Also assign keyStoreName to environment variable which will be used during container runtime. 
+# Also assign environment variables that will be used during container runtime. 
 ARG keyStoreName
 ENV KEYSTORE_NAME=${keyStoreName}
 ARG keyStorePassword
