@@ -18,18 +18,16 @@
 		trustStoreRef="defaultTrustStore" />
 	<keyStore id="defaultKeyStore"
 		location="${server.config.dir}/resources/security/${KEYSTORE_NAME}"
-		type="JKS" password="${KEYSTORE_PASSWORD}" />
+		type="JKS" password="${KEYSTORE_PASSWORD}" />		
 	<keyStore id="defaultTrustStore"
 		location="${JAVA_HOME}/lib/security/cacerts" type="JKS"
 		password="changeit" />
 
 	<openidConnectClient
-		id="liberty-aad-oidc-javaeecafe" 
-		scope="openid profile email"
-		clientId="${CLIENT_ID}"
-		clientSecret="${CLIENT_SECRET}"
+		id="liberty-aad-oidc-javaeecafe" scope="openid profile email"
+		clientId="${CLIENT_ID}" clientSecret="${CLIENT_SECRET}"
 		discoveryEndpointUrl="https://login.microsoftonline.com/${TENANT_ID}/v2.0/.well-known/openid-configuration"
-		signatureAlgorithm="RS256" userIdentityToCreateSubject="upn"
+		signatureAlgorithm="RS256" userIdentityToCreateSubject="email"
 		inboundPropagation="supported" />
 
 	<!-- To access this server from a remote client add a host attribute to 
@@ -54,8 +52,8 @@
 		libraryRef="postgresql-library" />
 
 	<library id="postgresql-library">
-		<fileset dir="/opt/ibm/wlp/usr/shared/resources/" id="PostgreSQLFileset"
-			includes="postgresql-42.2.4.jar" />
+		<fileset dir="/opt/ibm/wlp/usr/shared/resources/"
+			id="PostgreSQLFileset" includes="postgresql-42.2.4.jar" />
 	</library>
 
 	<webApplication id="javaee-cafe"
