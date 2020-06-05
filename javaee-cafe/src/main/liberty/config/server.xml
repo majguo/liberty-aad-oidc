@@ -18,9 +18,9 @@
 	<ssl id="defaultSSLConfig"  trustDefaultCerts="true" />
 
 	<openidConnectClient
-		id="liberty-aad-oidc-javaeecafe" clientId="${CLIENT_ID}"
-		clientSecret="${CLIENT_SECRET}"
-		discoveryEndpointUrl="https://login.microsoftonline.com/${TENANT_ID}/v2.0/.well-known/openid-configuration"
+		id="liberty-aad-oidc-javaeecafe" clientId="${client.id}"
+		clientSecret="${client.secret}"
+		discoveryEndpointUrl="https://login.microsoftonline.com/${tenant.id}/v2.0/.well-known/openid-configuration"
 		signatureAlgorithm="RS256"
 		userIdentityToCreateSubject="preferred_username"
 		inboundPropagation="supported" />
@@ -35,8 +35,8 @@
 		jdbcDriverRef="postgresql-driver" jndiName="jdbc/JavaEECafeDB"
 		transactional="true" type="javax.sql.ConnectionPoolDataSource">
 		<properties databaseName="postgres" portNumber="5432"
-			serverName="${POSTGRESQL_SERVER_NAME}" user="${POSTGRESQL_USER}"
-			password="${POSTGRESQL_PASSWORD}" />
+			serverName="${postgresql.server.name}" user="${postgresql.user}"
+			password="${postgresql.password}" />
 	</dataSource>
 
 	<jdbcDriver id="postgresql-driver"
@@ -45,7 +45,7 @@
 		libraryRef="postgresql-library" />
 
 	<library id="postgresql-library">
-		<fileset dir="/opt/ibm/wlp/usr/shared/resources/"
+		<fileset dir="${shared.resource.dir}"
 			id="PostgreSQLFileset" includes="postgresql-42.2.4.jar" />
 	</library>
 
