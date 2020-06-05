@@ -26,8 +26,10 @@ The first step to getting the application running is getting the database up. Pl
   ```
 * The database is now ready (to stop it, simply press Control-C after the Java EE application is shutdown).
 
+Now we can get the application up and running.  The following steps show two diferent ways to do so: Docker and maven.
+
 ### Start the Application with Docker
-The next step is to get the application up and running. Follow the steps below to do so.
+
 * Open a console. Navigate to where you have this repository downloaded on your local machine.
 * Run `mvn clean package --file javaee-cafe/pom.xml`. This will generate a war deployment under `./javaee-cafe/target`.
 * Build a Docker image tagged `javaee-cafe` by running one of the following commands.
