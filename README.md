@@ -32,19 +32,11 @@ The next step is to get the application up and running. Follow the steps below t
 * Change directory to `<path-to-repository>/javaee-cafe`.
 * Run `mvn clean package`. This will generate a war deployment under `./target`.
 * Change directory back to `<path-to-repository>`.
-* You will need to create a custom key store for SSL. Issue the following command to do so. Please use the same password for the key store and key.
+* Build a Docker image tagged `javaee-cafe` by running the following command.
   ```
-  keytool -genkeypair -keyalg RSA -storetype jks -keystore key.jks
-  ```
-* Build a Docker image tagged `javaee-cafe` by running the following command. These are the parameters required:
-  * `keyStoreName`: key.jks from above.
-  * `keyStorePassword`: The key store password from above.
-  ```
-  docker build -t javaee-cafe --build-arg keyStoreName=key.jks --build-arg keyStorePassword=<...> .
+  docker build -t javaee-cafe .
   ```
 * To run the newly built image, execute the following command. These are the parameters required:
-  * `KEYSTORE_NAME`: key.jks from above.
-  * `KEYSTORE_PASSWORD`: The key store password from above.
   * `POSTGRESQL_SERVER_NAME`: For Mac and Windows users, 'host.docker.internal' may be used. For other operating systems, use the IP 172.17.0.2 (note, this depends on the fact that the database is the first container to start).
   * `POSTGRESQL_USER`: Use `postgres`.
   * `POSTGRESQL_PASSWORD`: Keep it empty.
@@ -52,7 +44,7 @@ The next step is to get the application up and running. Follow the steps below t
   * `CLIENT_SECRET`: The client secret value you noted down.
   * `TENANT_ID`: The tenant/directory ID you noted down.
   ```
-  docker run -it --rm -p 9080:9080 -p 9443:9443 -e KEYSTORE_NAME=key.jks -e KEYSTORE_PASSWORD=<...> -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD="" -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
+  docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD="" -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
 * Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 * Once the application starts, you can visit the JSF client at
