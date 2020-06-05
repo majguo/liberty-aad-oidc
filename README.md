@@ -29,12 +29,13 @@ The first step to getting the application running is getting the database up. Pl
 ### Start the Application with Docker
 The next step is to get the application up and running. Follow the steps below to do so.
 * Open a console. Navigate to where you have this repository downloaded on your local machine.
-* Change directory to `<path-to-repository>/javaee-cafe`.
-* Run `mvn clean package`. This will generate a war deployment under `./target`.
-* Change directory back to `<path-to-repository>`.
-* Build a Docker image tagged `javaee-cafe` by running the following command.
+* Run `mvn clean package --file javaee-cafe/pom.xml`. This will generate a war deployment under `./javaee-cafe/target`.
+* Build a Docker image tagged `javaee-cafe` by running one of the following commands.
   ```
+  # build from open liberty base image
   docker build -t javaee-cafe .
+  # build from websphere liberty base iamge
+  docker build -t javaee-cafe --file=Dockerfile-wlp .
   ```
 * To run the newly built image, execute the following command. These are the parameters required:
   * `POSTGRESQL_SERVER_NAME`: For Mac and Windows users, 'host.docker.internal' may be used. For other operating systems, use the IP 172.17.0.2 (note, this depends on the fact that the database is the first container to start).
@@ -47,6 +48,24 @@ The next step is to get the application up and running. Follow the steps below t
   docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD="" -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
 * Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
+
+### Start the Application with Maven
+You can also get the application up and running using `mvn` command.
+* Open a console. Navigate to where you have this repository downloaded on your local machine.
+* Run `mvn clean package --file javaee-cafe/pom.xml`.
+* Execute the following command with required parameters:
+  * `postgresql.server.name`: Use `localhost`.
+  * `postgresql.user`: Use `postgres`.
+  * `postgresql.password`: Keep it empty.
+  * `client.id`: The application/client ID you noted down.
+  * `client.secret`: The client secret value you noted down.
+  * `tenant.id`: The tenant/directory ID you noted down.
+  ```
+  mvn -Dpostgresql.server.name=<...> -Dpostgresql.user=<...> -Dpostgresql.password="" -Dclient.id=<...> -Dclient.secret=<...> -Dtenant.id=<...> liberty:run --file javaee-cafe/pom.xml
+  ```
+* Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
+
+### Visit the Application
 * Once the application starts, you can visit the JSF client at
   * [https://localhost:9443/javaee-cafe](https://localhost:9443/javaee-cafe)
   * [http://localhost:9080/javaee-cafe](http://localhost:9080/javaee-cafe)
