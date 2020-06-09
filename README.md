@@ -45,7 +45,7 @@ The next step is to get the application up and running. Follow the steps below t
   * `CLIENT_SECRET`: The client secret value you noted down.
   * `TENANT_ID`: The tenant/directory ID you noted down.
   ```
-  docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD="" -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
+  docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD= -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
 * Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 
@@ -61,7 +61,11 @@ You can also get the application up and running using `mvn` command.
   * `client.secret`: The client secret value you noted down.
   * `tenant.id`: The tenant/directory ID you noted down.
   ```
-  mvn -Dpostgresql.server.name=<...> -Dpostgresql.user=<...> -Dpostgresql.password="" -Dclient.id=<...> -Dclient.secret=<...> -Dtenant.id=<...> liberty:run --file javaee-cafe/pom.xml
+  mvn -Dpostgresql.server.name=<...> -Dpostgresql.user=<...> -Dpostgresql.password= -Dclient.id=<...> -Dclient.secret=<...> -Dtenant.id=<...> liberty:run --file javaee-cafe/pom.xml
+  ```
+* Note: if you want to run from Windwos PowerShell, using the following command:
+  ```
+  mvn "-Dpostgresql.server.name=<...>" "-Dpostgresql.user=<...>" "-Dpostgresql.password=" "-Dclient.id=<...>" "-Dclient.secret=<...>" "-Dtenant.id=<...>" liberty:run --file javaee-cafe/pom.xml
   ```
 * Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 
