@@ -55,7 +55,7 @@ Now we can get the application up and running.  The following steps show two dif
 You can also get the application up and running using `mvn` command.
 * Open a console. Navigate to where you have this repository downloaded on your local machine.
 * Run `mvn clean package --file javaee-cafe/pom.xml`.
-* Execute the following command with required parameters (do not use this command for Windows PowerShell):
+* Execute the following command with required parameters (Windows PowerShell uses a slight variant):
   * `postgresql.server.name`: Use `localhost`.
   * `postgresql.user`: Use `postgres`.
   * `postgresql.password`: Keep it empty.
