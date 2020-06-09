@@ -67,7 +67,7 @@ You can also get the application up and running using `mvn` command.
   ```
 * Note: if you want to run from Windows PowerShell, please use the following command:
   ```
-  mvn "-Dpostgresql.server.name=localhost" "-Dpostgresql.user=postgres" "-Dpostgresql.password=" "-Dclient.id=<...>" "-Dclient.secret=<...>" "-Dtenant.id=<...>" liberty:run --file javaee-cafe/pom.xml
+  mvn --file javaee-cafe/pom.xml liberty:run "-Dpostgresql.server.name=localhost" "-Dpostgresql.user=postgres" "-Dpostgresql.password=" "-Dclient.id=<...>" "-Dclient.secret=<...>" "-Dtenant.id=<...>" 
   ```
 * Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 
