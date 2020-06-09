@@ -4,7 +4,7 @@
 This project demonstrates how to secure your Java EE application on Open Liberty/WebSphere Liberty using Azure Active Directory and OpenID Connect. The following is how you run the demo.
 
 ## Prerequisites
-* Install Java SE 8 (we used [AdoptOpenJDK OpenJDK 8 LTS/HotSpot](https://adoptopenjdk.net)).
+* Install Java SE 8 (we used [AdoptOpenJDK OpenJDK 8 LTS/OpenJ9](https://adoptopenjdk.net)).
 * Install [Maven](https://maven.apache.org/download.cgi).
 * Install [Docker](https://docs.docker.com/get-docker/) for your OS.
 * You will need an Azure subscription. If you don't have one, you can get one for free for one year [here](https://azure.microsoft.com/en-us/free).
@@ -26,8 +26,10 @@ The first step to getting the application running is getting the database up. Pl
   ```
 * The database is now ready (to stop it, simply press Control-C after the Java EE application is shutdown).
 
+Now we can get the application up and running.  The following steps show two diferent ways to do so: Docker and maven.
+
 ### Start the Application with Docker
-The next step is to get the application up and running. Follow the steps below to do so.
+
 * Open a console. Navigate to where you have this repository downloaded on your local machine.
 * Run `mvn clean package --file javaee-cafe/pom.xml`. This will generate a war deployment under `./javaee-cafe/target`.
 * Build a Docker image tagged `javaee-cafe` by running one of the following commands.
@@ -61,11 +63,11 @@ You can also get the application up and running using `mvn` command.
   * `client.secret`: The client secret value you noted down.
   * `tenant.id`: The tenant/directory ID you noted down.
   ```
-  mvn -Dpostgresql.server.name=<...> -Dpostgresql.user=<...> -Dpostgresql.password= -Dclient.id=<...> -Dclient.secret=<...> -Dtenant.id=<...> liberty:run --file javaee-cafe/pom.xml
+  mvn -Dpostgresql.server.name=localhost -Dpostgresql.user=postgres -Dpostgresql.password= -Dclient.id=<...> -Dclient.secret=<...> -Dtenant.id=<...> liberty:run --file javaee-cafe/pom.xml
   ```
 * Note: if you want to run from Windwos PowerShell, using the following command:
   ```
-  mvn "-Dpostgresql.server.name=<...>" "-Dpostgresql.user=<...>" "-Dpostgresql.password=" "-Dclient.id=<...>" "-Dclient.secret=<...>" "-Dtenant.id=<...>" liberty:run --file javaee-cafe/pom.xml
+  mvn "-Dpostgresql.server.name=localhost" "-Dpostgresql.user=postgres" "-Dpostgresql.password=" "-Dclient.id=<...>" "-Dclient.secret=<...>" "-Dtenant.id=<...>" liberty:run --file javaee-cafe/pom.xml
   ```
 * Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 
