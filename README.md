@@ -63,7 +63,7 @@ You can also get the application up and running using `mvn` command.
   * `client.secret`: The client secret value you noted down.
   * `tenant.id`: The tenant/directory ID you noted down.
   ```
-  mvn -Dpostgresql.server.name=<...> -Dpostgresql.user=<...> -Dpostgresql.password="" -Dclient.id=<...> -Dclient.secret=<...> -Dtenant.id=<...> liberty:run --file javaee-cafe/pom.xml
+  mvn -Dpostgresql.server.name=localhost -Dpostgresql.user=postgres -Dpostgresql.password="" -Dclient.id=<...> -Dclient.secret=<...> -Dtenant.id=<...> liberty:run --file javaee-cafe/pom.xml
   ```
 * Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 
