@@ -4,7 +4,7 @@
 This project demonstrates how to secure your Java EE application on Open Liberty/WebSphere Liberty using Azure Active Directory and OpenID Connect. The following is how you run the demo.
 
 ## Prerequisites
-* Install Java SE 8 (we used [AdoptOpenJDK OpenJDK 8 LTS/HotSpot](https://adoptopenjdk.net)).
+* Install Java SE 8 (we used [AdoptOpenJDK OpenJDK 8 LTS/OpenJ9](https://adoptopenjdk.net)).
 * Install [Maven](https://maven.apache.org/download.cgi).
 * Install [Docker](https://docs.docker.com/get-docker/) for your OS.
 * You will need an Azure subscription. If you don't have one, you can get one for free for one year [here](https://azure.microsoft.com/en-us/free).
@@ -26,25 +26,20 @@ The first step to getting the application running is getting the database up. Pl
   ```
 * The database is now ready (to stop it, simply press Control-C after the Java EE application is shutdown).
 
+Now we can get the application up and running.  The following steps show two diferent ways to do so: Docker and maven.
+
 ### Start the Application with Docker
-The next step is to get the application up and running. Follow the steps below to do so.
+
 * Open a console. Navigate to where you have this repository downloaded on your local machine.
-* Change directory to `<path-to-repository>/javaee-cafe`.
-* Run `mvn clean package`. This will generate a war deployment under `./target`.
-* Change directory back to `<path-to-repository>`.
-* You will need to create a custom key store for SSL. Issue the following command to do so. Please use the same password for the key store and key.
+* Run `mvn clean package --file javaee-cafe/pom.xml`. This will generate a war deployment under `./javaee-cafe/target`.
+* Build a Docker image tagged `javaee-cafe` by running one of the following commands.
   ```
-  keytool -genkeypair -keyalg RSA -storetype jks -keystore key.jks
-  ```
-* Build a Docker image tagged `javaee-cafe` by running the following command. These are the parameters required:
-  * `keyStoreName`: key.jks from above.
-  * `keyStorePassword`: The key store password from above.
-  ```
-  docker build -t javaee-cafe --build-arg keyStoreName=key.jks --build-arg keyStorePassword=<...> .
+  # build from open liberty base image
+  docker build -t javaee-cafe --pull .
+  # build from websphere liberty base iamge
+  docker build -t javaee-cafe --pull --file=Dockerfile-wlp .
   ```
 * To run the newly built image, execute the following command. These are the parameters required:
-  * `KEYSTORE_NAME`: key.jks from above.
-  * `KEYSTORE_PASSWORD`: The key store password from above.
   * `POSTGRESQL_SERVER_NAME`: For Mac and Windows users, 'host.docker.internal' may be used. For other operating systems, use the IP 172.17.0.2 (note, this depends on the fact that the database is the first container to start).
   * `POSTGRESQL_USER`: Use `postgres`.
   * `POSTGRESQL_PASSWORD`: Keep it empty.
@@ -52,9 +47,31 @@ The next step is to get the application up and running. Follow the steps below t
   * `CLIENT_SECRET`: The client secret value you noted down.
   * `TENANT_ID`: The tenant/directory ID you noted down.
   ```
-  docker run -it --rm -p 9080:9080 -p 9443:9443 -e KEYSTORE_NAME=key.jks -e KEYSTORE_PASSWORD=<...> -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD="" -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
+  docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD= -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
 * Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
+
+### Start the Application with Maven
+You can also get the application up and running using the `mvn` command.
+* Open a console. Navigate to where you have this repository downloaded on your local machine.
+* Run `mvn clean package --file javaee-cafe/pom.xml`.
+* Execute the following command with required parameters (Windows PowerShell uses a slight variant):
+  * `postgresql.server.name`: Use `localhost`.
+  * `postgresql.user`: Use `postgres`.
+  * `postgresql.password`: Keep it empty.
+  * `client.id`: The application/client ID you noted down.
+  * `client.secret`: The client secret value you noted down.
+  * `tenant.id`: The tenant/directory ID you noted down.
+  ```
+  mvn -Dpostgresql.server.name=localhost -Dpostgresql.user=postgres -Dpostgresql.password= -Dclient.id=<...> -Dclient.secret=<...> -Dtenant.id=<...> liberty:run --file javaee-cafe/pom.xml
+  ```
+* Note: if you want to run from Windows PowerShell, please use the following command:
+  ```
+  mvn --file javaee-cafe/pom.xml liberty:run "-Dpostgresql.server.name=localhost" "-Dpostgresql.user=postgres" "-Dpostgresql.password=" "-Dclient.id=<...>" "-Dclient.secret=<...>" "-Dtenant.id=<...>" 
+  ```
+* Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
+
+### Visit the Application
 * Once the application starts, you can visit the JSF client at
   * [https://localhost:9443/javaee-cafe](https://localhost:9443/javaee-cafe)
   * [http://localhost:9080/javaee-cafe](http://localhost:9080/javaee-cafe)
@@ -63,7 +80,7 @@ The next step is to get the application up and running. Follow the steps below t
 * [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
 * [Enabling SSL communication in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_sec_ssl.html)
 * [Configuring authorization for applications in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_sec_rolebased.html)
-* [keytool](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html)
+* [SSL configuration in Open Liberty](https://openliberty.io/docs/ref/config/#ssl.html)
 
 ## Future Considerations
 * Applying JWT propagated from the inital login to secure internal REST calls.
