@@ -52,7 +52,7 @@ Now we can get the application up and running.  The following steps show two dif
 * Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
 
 ### Start the Application with Maven
-You can also get the application up and running using `mvn` command.
+You can also get the application up and running using the `mvn` command.
 * Open a console. Navigate to where you have this repository downloaded on your local machine.
 * Run `mvn clean package --file javaee-cafe/pom.xml`.
 * Execute the following command with required parameters (Windows PowerShell uses a slight variant):
