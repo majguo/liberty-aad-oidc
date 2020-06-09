@@ -35,9 +35,9 @@ Now we can get the application up and running.  The following steps show two dif
 * Build a Docker image tagged `javaee-cafe` by running one of the following commands.
   ```
   # build from open liberty base image
-  docker build -t javaee-cafe .
+  docker build -t javaee-cafe --pull .
   # build from websphere liberty base iamge
-  docker build -t javaee-cafe --file=Dockerfile-wlp .
+  docker build -t javaee-cafe --pull --file=Dockerfile-wlp .
   ```
 * To run the newly built image, execute the following command. These are the parameters required:
   * `POSTGRESQL_SERVER_NAME`: For Mac and Windows users, 'host.docker.internal' may be used. For other operating systems, use the IP 172.17.0.2 (note, this depends on the fact that the database is the first container to start).
