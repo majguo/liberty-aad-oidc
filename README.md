@@ -80,7 +80,7 @@ You can also get the application up and running using `mvn` command.
 * [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
 * [Enabling SSL communication in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_sec_ssl.html)
 * [Configuring authorization for applications in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_sec_rolebased.html)
-* [keytool](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html)
+* [SSL configuration in Open Liberty](https://openliberty.io/docs/ref/config/#ssl.html)
 
 ## Future Considerations
 * Applying JWT propagated from the inital login to secure internal REST calls.
