@@ -55,7 +55,7 @@ Now we can get the application up and running.  The following steps show two dif
 You can also get the application up and running using `mvn` command.
 * Open a console. Navigate to where you have this repository downloaded on your local machine.
 * Run `mvn clean package --file javaee-cafe/pom.xml`.
-* Execute the following command with required parameters:
+* Execute the following command with required parameters (do not use this command for Windows PowerShell):
   * `postgresql.server.name`: Use `localhost`.
   * `postgresql.user`: Use `postgres`.
   * `postgresql.password`: Keep it empty.
@@ -65,7 +65,7 @@ You can also get the application up and running using `mvn` command.
   ```
   mvn -Dpostgresql.server.name=localhost -Dpostgresql.user=postgres -Dpostgresql.password= -Dclient.id=<...> -Dclient.secret=<...> -Dtenant.id=<...> liberty:run --file javaee-cafe/pom.xml
   ```
-* Note: if you want to run from Windows PowerShell, using the following command:
+* Note: if you want to run from Windows PowerShell, please use the following command:
   ```
   mvn "-Dpostgresql.server.name=localhost" "-Dpostgresql.user=postgres" "-Dpostgresql.password=" "-Dclient.id=<...>" "-Dclient.secret=<...>" "-Dtenant.id=<...>" liberty:run --file javaee-cafe/pom.xml
   ```
