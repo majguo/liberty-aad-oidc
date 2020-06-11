@@ -10,6 +10,7 @@ Azure Active Directory (AAD) implements OpenID Connect (OIDC), an authentication
 
 ## Configure OpenID Connect Client
 The following sample code snippets show how a Jakarta EE application running on an Open Liberty server is configured with OpenID Connect Client (openidConnectClient-1.0) feature to authenticate a user from a OpenID Connect Provider, with AAD as the designated security provider.
+
 The relevant server configuration in `server.xml`:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -53,6 +54,7 @@ The certificate of root CA which signed Microsoft public certificate is added to
 
 ## Use OpenID Connect to authenticate users
 The sample application exposes a [JSF](https://www.oracle.com/java/technologies/javaserverfaces.html) client which defines security constraint that only user with role "users" can access.
+
 The relevant configuration in `web.xml`:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -89,3 +91,4 @@ public class Cafe implements Serializable {
 	}
 }
 ```
+
