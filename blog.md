@@ -2,6 +2,8 @@
 
 Nowadays, more and more modern applications are secured by external security provider, which provides the benefit that applications no longer need to own and manage users' credentials. Open Liberty also supports relevant security features, e.g., [Social Media Login](https://openliberty.io/docs/ref/feature/#socialLogin-1.0.html), [SAML Web Single Sign-on](https://openliberty.io/docs/ref/feature/#samlWeb-2.0.html) and [OpenID Connect Client](https://openliberty.io/docs/ref/feature/#openidConnectClient-1.0.html). In blog "[Securing Open Liberty apps and microservices with MicroProfile JWT and Social Media login](https://openliberty.io/blog/2019/08/29/securing-microservices-social-login-jwt.html)", it gave a solid example on how to use Open Liberty Social Media Login feature to authenticate users using their existing social media credentials. In this blog, let's take a look at another example about how to use Open Liberty OpenID Connect Client feature to secure apps with [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc).
 
+By the way, the sample code used in this blog is hosted on this [GitHub repo](https://github.com/majguo/liberty-aad-oidc), feel free to check it out and follow its user guide to run the demo application before or after reading this blog.
+
 ## Set up Azure Active Directory
 Azure Active Directory (AAD) implements OpenID Connect (OIDC), an authentication protocol built on OAuth 2.0, which lets you securely sign in a user from AAD to an application. Before going into the sample code, you need to first set up AAD tenant and create an application registration with redirect URL & client secret. The tenant id, application(client) id & client secret are used by Open Liberty OpenID Connect Client to negotiate with AAD to complete [OAuth 2.0 authorization code flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow). 
 
@@ -93,8 +95,6 @@ public class Cafe implements Serializable {
 	}
 }
 ```
-
-The source code is hosted on this [GitHub repo](https://github.com/majguo/liberty-aad-oidc), feel free to check it out and follow the  user guide to run the demo application used in this blog.
 
 ## Further considerations
 One of further considerations is to apply Json Web Token propagated from OpenID Connect Provider to secure downstream internal REST calls with a HTTP Authorization header. The access token can be accessed using the [com.ibm.websphere.security.openidconnect.PropagationHelper.getAccessToken()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/websphere/security/openidconnect/PropagationHelper.java) API and the ID token can be retrieved by refering to [com.ibm.ws.security.openidconnect.common.impl.PropagationHelperImpl.getSubjectAttributeObject()] API.
