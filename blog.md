@@ -43,6 +43,7 @@ The relevant server configuration in `server.xml`:
     </application-bnd>
   </webApplication>
 
+  <!-- define http endpoints -->
   <httpEndpoint id="defaultHttpEndpoint" host="*"
     httpPort="9080" httpsPort="9443" />
 </server>
@@ -50,3 +51,41 @@ The relevant server configuration in `server.xml`:
 
 The certificate of root CA which signed Microsoft public certificate is added to JVM default cacerts, so trusting JVM default cacerts ensures successful SSL handshake between OpenID Connect Client and AAD.
 
+## Use OpenID Connect to authenticate users
+The sample application exposes a [JSF](https://www.oracle.com/java/technologies/javaserverfaces.html) client which defines security constraint that only user with role "users" can access.
+The relevant configuration in `web.xml`:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+    <security-role>
+        <role-name>users</role-name>
+    </security-role>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>javaee-cafe</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>users</role-name>
+        </auth-constraint>
+    </security-constraint>
+</web-app>
+```
+
+So when unauthenticated users attempt to access the JSF client, they are redirected to Microsoft to ask their AAD credentials. Upon success, the browser gets redirected back to the client with an authorization code. The client then contacts the Microsoft with authorization code, client Id & secret to obtain an ID token & access token, and finally create an authenticated user on the client, which then gets access to the JSF client.
+
+To get authenticated user information, inject `javax.security.enterprise.SecurityContext` and call its method `getCallerPrincipal()`:
+```
+@Named
+@SessionScoped
+public class Cafe implements Serializable {
+
+	@Inject
+	private transient SecurityContext securityContext;
+
+	public String getLoggedOnUser() {
+		return securityContext.getCallerPrincipal().getName();
+	}
+}
+```
