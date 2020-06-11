@@ -14,37 +14,37 @@ The relevant server configuration in `server.xml`:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="defaultServer">
-	<!-- Enable features -->
-	<featureManager>
-		<feature>openidConnectClient-1.0</feature>
-		<feature>transportSecurity-1.0</feature>
-		<feature>appSecurity-3.0</feature>
-	</featureManager>
+  <!-- Enable features -->
+  <featureManager>
+    <feature>openidConnectClient-1.0</feature>
+    <feature>transportSecurity-1.0</feature>
+    <feature>appSecurity-3.0</feature>
+  </featureManager>
 
-	<!-- trust JDK’s default truststore -->
-	<ssl id="defaultSSLConfig"  trustDefaultCerts="true" />
+  <!-- trust JDK’s default truststore -->
+  <ssl id="defaultSSLConfig"  trustDefaultCerts="true" />
 
   <!-- add your tanent id, client ID and secret from AAD -->
-	<openidConnectClient
-		id="liberty-aad-oidc-javaeecafe" clientId="${client.id}"
-		clientSecret="${client.secret}"
-		discoveryEndpointUrl="https://login.microsoftonline.com/${tenant.id}/v2.0/.well-known/openid-configuration"
-		signatureAlgorithm="RS256"
-		userIdentityToCreateSubject="preferred_username"
-		inboundPropagation="supported" />
+  <openidConnectClient
+    id="liberty-aad-oidc-javaeecafe" clientId="${client.id}"
+    clientSecret="${client.secret}"
+    discoveryEndpointUrl="https://login.microsoftonline.com/${tenant.id}/v2.0/.well-known/openid-configuration"
+    signatureAlgorithm="RS256"
+    userIdentityToCreateSubject="preferred_username"
+    inboundPropagation="supported" />
 
   <!-- grant role "users" to all authenticated users -->
-	<webApplication id="javaee-cafe"
-		location="${server.config.dir}/apps/javaee-cafe.war">
-		<application-bnd>
-			<security-role name="users">
-				<special-subject type="ALL_AUTHENTICATED_USERS" />
-			</security-role>
-		</application-bnd>
-	</webApplication>
+  <webApplication id="javaee-cafe"
+    location="${server.config.dir}/apps/javaee-cafe.war">
+    <application-bnd>
+      <security-role name="users">
+        <special-subject type="ALL_AUTHENTICATED_USERS" />
+      </security-role>
+    </application-bnd>
+  </webApplication>
 
   <httpEndpoint id="defaultHttpEndpoint" host="*"
-		httpPort="9080" httpsPort="9443" />
+    httpPort="9080" httpsPort="9443" />
 </server>
 ```
 
