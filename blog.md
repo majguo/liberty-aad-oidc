@@ -97,7 +97,7 @@ public class Cafe implements Serializable {
 ```
 
 ## Further considerations
-One of further considerations is to apply Json Web Token propagated from OpenID Connect Provider to secure downstream internal REST calls with a HTTP Authorization header. The access token can be accessed using the [com.ibm.websphere.security.openidconnect.PropagationHelper.getAccessToken()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/websphere/security/openidconnect/PropagationHelper.java) API and the ID token can be retrieved by refering to [com.ibm.ws.security.openidconnect.common.impl.PropagationHelperImpl.getSubjectAttributeObject()] API.
+One of further considerations is to apply Json Web Token propagated from OpenID Connect Provider to secure downstream internal REST calls with a HTTP Authorization header. The access token can be accessed using the [com.ibm.websphere.security.openidconnect.PropagationHelper.getAccessToken()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/websphere/security/openidconnect/PropagationHelper.java#L25-L27) API and the ID token can be retrieved by refering to the [com.ibm.ws.security.openidconnect.common.impl.PropagationHelperImpl.getSubjectAttributeObject()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/ws/security/openidconnect/common/impl/PropagationHelperImpl.java#L133-L170) API.
 
 ## Other references
 - [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
