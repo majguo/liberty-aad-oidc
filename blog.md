@@ -5,17 +5,21 @@ Nowadays, more and more modern applications are secured by external security pro
 By the way, the sample code used in this blog is hosted on this [GitHub repo](https://github.com/majguo/liberty-aad-oidc), feel free to check it out and follow its user guide to run the demo application before or after reading this blog.
 
 ## Set up Azure Active Directory
+
 Azure Active Directory (AAD) implements OpenID Connect (OIDC), an authentication protocol built on OAuth 2.0, which lets you securely sign in a user from AAD to an application. Before going into the sample code, you need to first set up AAD tenant and create an application registration with redirect URL & client secret. The tenant id, application(client) id & client secret are used by Open Liberty OpenID Connect Client to negotiate with AAD to complete [OAuth 2.0 authorization code flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow). 
 
 Refer to the following articles on how to set it up:
+
 - [Create a new tenant](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
 - [Register an application](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
 - [Add a new client secret](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow#request-the-permissions-in-the-app-registration-portal)
 
 ## Configure OpenID Connect Client
+
 The following sample code snippets show how a Jakarta EE application running on an Open Liberty server is configured with OpenID Connect Client (openidConnectClient-1.0) feature to authenticate a user from a OpenID Connect Provider, with AAD as the designated security provider.
 
 The relevant server configuration in `server.xml`:
+
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="defaultServer">
@@ -57,16 +61,18 @@ The relevant server configuration in `server.xml`:
 The certificate of root CA which signed Microsoft public certificate is added to JVM default cacerts, so trusting JVM default cacerts ensures successful SSL handshake between OpenID Connect Client and AAD.
 
 ## Use OpenID Connect to authenticate users
+
 The sample application exposes a [JSF](https://www.oracle.com/java/technologies/javaserverfaces.html) client which defines security constraint that only user with role "users" can access.
 
 The relevant configuration in `web.xml`:
+
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app>
     <security-role>
         <role-name>users</role-name>
     </security-role>
-    
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>javaee-cafe</web-resource-name>
@@ -82,23 +88,26 @@ The relevant configuration in `web.xml`:
 So when unauthenticated users attempt to access the JSF client, they are redirected to Microsoft to ask their AAD credentials. Upon success, the browser gets redirected back to the client with an authorization code. The client then contacts the Microsoft again with authorization code, client Id & secret to obtain an ID token & access token, and finally create an authenticated user on the client, which then gets access to the JSF client.
 
 To get authenticated user information, inject `javax.security.enterprise.SecurityContext` and call its method `getCallerPrincipal()`:
+
 ```
 @Named
 @SessionScoped
 public class Cafe implements Serializable {
 
-	@Inject
-	private transient SecurityContext securityContext;
+  @Inject
+  private transient SecurityContext securityContext;
 
-	public String getLoggedOnUser() {
-		return securityContext.getCallerPrincipal().getName();
-	}
+  public String getLoggedOnUser() {
+    return securityContext.getCallerPrincipal().getName();
+  }
 }
 ```
 
 ## Further considerations
-One of further considerations is to apply Json Web Token propagated from OpenID Connect Provider to secure downstream internal REST calls with a HTTP Authorization header. The access token can be accessed using the [com.ibm.websphere.security.openidconnect.PropagationHelper.getAccessToken()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/websphere/security/openidconnect/PropagationHelper.java#L25-L27) API and the ID token can be retrieved by refering to the [com.ibm.ws.security.openidconnect.common.impl.PropagationHelperImpl.getSubjectAttributeObject()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/ws/security/openidconnect/common/impl/PropagationHelperImpl.java#L133-L170) API.
+
+One of further considerations is to apply Json Web Token propagated from OpenID Connect Provider to secure downstream internal REST calls with a HTTP Authorization header. The access token can be accessed using the [com.ibm.websphere.security.openidconnect.PropagationHelper.getAccessToken()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/websphere/security/openidconnect/PropagationHelper.java#L25-L27) API and the ID token can be retrieved by referring to the [com.ibm.ws.security.openidconnect.common.impl.PropagationHelperImpl.getSubjectAttributeObject()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/ws/security/openidconnect/common/impl/PropagationHelperImpl.java#L133-L170) API.
 
 ## Other references
+
 - [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
 - [Secure your application by using OpenID Connect and Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
