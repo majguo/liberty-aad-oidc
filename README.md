@@ -5,7 +5,7 @@ This project demonstrates how to secure your Java EE application on Open Liberty
 
 ## Prerequisites
 * Install Java SE 8 (we used [AdoptOpenJDK OpenJDK 8 LTS/OpenJ9](https://adoptopenjdk.net)).
-* Install [Maven](https://maven.apache.org/download.cgi).
+* Install [Maven](https://maven.apache.org/download.cgi) 3.5.0 or higher.
 * Install [Docker](https://docs.docker.com/get-docker/) for your OS.
 * You will need an Azure subscription. If you don't have one, you can get one for free for one year [here](https://azure.microsoft.com/en-us/free).
 * Download this repository somewhere in your file system (easiest way might be to download as a zip and extract).
