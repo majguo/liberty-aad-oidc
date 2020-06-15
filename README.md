@@ -49,7 +49,7 @@ Now we can get the application up and running.  The following steps show two dif
   ```
   docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD= -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
-* Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
+* Wait for Liberty to start and the application to deploy successfully (to stop the application and Liberty, simply press Control-C).
 
 ### Start the Application with Maven
 You can also get the application up and running using the `mvn` command.
@@ -69,7 +69,7 @@ You can also get the application up and running using the `mvn` command.
   ```
   mvn --file javaee-cafe/pom.xml liberty:run "-Dpostgresql.server.name=localhost" "-Dpostgresql.user=postgres" "-Dpostgresql.password=" "-Dclient.id=<...>" "-Dclient.secret=<...>" "-Dtenant.id=<...>" 
   ```
-* Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
+* Wait for Liberty to start and the application to deploy successfully (to stop the application and Liberty, simply press Control-C).
 
 ### Visit the Application
 * Once the application starts, you can visit the JSF client at
