@@ -49,7 +49,7 @@ Now we can get the application up and running.  The following steps show two dif
   ```
   docker run -it --rm -p 9080:9080 -p 9443:9443 -e POSTGRESQL_SERVER_NAME=<...> -e POSTGRESQL_USER=postgres -e POSTGRESQL_PASSWORD= -e CLIENT_ID=<...> -e CLIENT_SECRET=<...> -e TENANT_ID=<...> javaee-cafe
   ```
-* Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
+* Wait for Liberty to start and the application to deploy successfully (to stop the application and Liberty, simply press Control-C).
 
 ### Start the Application with Maven
 You can also get the application up and running using the `mvn` command.
