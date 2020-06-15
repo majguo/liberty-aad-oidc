@@ -69,7 +69,7 @@ You can also get the application up and running using the `mvn` command.
   ```
   mvn --file javaee-cafe/pom.xml liberty:run "-Dpostgresql.server.name=localhost" "-Dpostgresql.user=postgres" "-Dpostgresql.password=" "-Dclient.id=<...>" "-Dclient.secret=<...>" "-Dtenant.id=<...>" 
   ```
-* Wait for Liberty to start and the application to deploy sucessfully (to stop the application and Liberty, simply press Control-C).
+* Wait for Liberty to start and the application to deploy successfully (to stop the application and Liberty, simply press Control-C).
 
 ### Visit the Application
 * Once the application starts, you can visit the JSF client at
