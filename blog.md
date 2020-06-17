@@ -1,4 +1,4 @@
-# Securing Open Liberty Applications with Azure Active Directory via OpenID Connect
+# Securing Open Liberty Application with Azure Active Directory via OpenID Connect
 
 Nowadays, more and more modern applications are secured by external security provider, which provides the benefit that applications no longer need to own and manage users' credentials. Open Liberty also supports relevant security features, e.g., [Social Media Login](https://openliberty.io/docs/ref/feature/#socialLogin-1.0.html), [SAML Web Single Sign-on](https://openliberty.io/docs/ref/feature/#samlWeb-2.0.html) and [OpenID Connect Client](https://openliberty.io/docs/ref/feature/#openidConnectClient-1.0.html). In blog "[Securing Open Liberty apps and micro-services with MicroProfile JWT and Social Media login](https://openliberty.io/blog/2019/08/29/securing-microservices-social-login-jwt.html)", it gave a solid example on how to use Open Liberty Social Media Login feature to authenticate users using their existing social media credentials. In this blog, let's take a look at another example about how to use Open Liberty OpenID Connect Client feature to secure apps with [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc).
 
@@ -105,7 +105,7 @@ public class Cafe implements Serializable {
 
 ## Further considerations
 
-One of further considerations is to apply Json Web Token propagated from OpenID Connect Provider to secure downstream internal REST calls with a HTTP Authorization header. The access token can be accessed using the [com.ibm.websphere.security.openidconnect.PropagationHelper.getAccessToken()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/websphere/security/openidconnect/PropagationHelper.java#L25-L27) API and the ID token can be retrieved by referring to the [com.ibm.ws.security.openidconnect.common.impl.PropagationHelperImpl.getSubjectAttributeObject()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/ws/security/openidconnect/common/impl/PropagationHelperImpl.java#L133-L170) API.
+One of further considerations is to apply Json Web Token propagated from OpenID Connect Provider to secure downstream internal REST calls with a HTTP Authorization header. Refer to [com.ibm.websphere.security.openidconnect.PropagationHelper.getIdToken()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/websphere/security/openidconnect/PropagationHelper.java#L60-L62) API to get the ID token issued by the OpenID Connect Provider.
 
 ## Other references
 
