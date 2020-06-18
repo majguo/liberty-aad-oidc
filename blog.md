@@ -1,18 +1,18 @@
 # Securing Open Liberty Application with Azure Active Directory via OpenID Connect
 
-Nowadays, more and more modern applications are secured by external security provider, which provides the benefit that applications no longer need to own and manage users' credentials. Open Liberty also supports relevant security features, e.g., [Social Media Login](https://openliberty.io/docs/ref/feature/#socialLogin-1.0.html), [SAML Web Single Sign-on](https://openliberty.io/docs/ref/feature/#samlWeb-2.0.html) and [OpenID Connect Client](https://openliberty.io/docs/ref/feature/#openidConnectClient-1.0.html). In blog "[Securing Open Liberty apps and micro-services with MicroProfile JWT and Social Media login](https://openliberty.io/blog/2019/08/29/securing-microservices-social-login-jwt.html)", it gave a solid example on how to use Open Liberty Social Media Login feature to authenticate users using their existing social media credentials. In this blog, let's take a look at another example about how to use Open Liberty OpenID Connect Client feature to secure apps with [Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-protocols-oidc).
+Nowadays, more and more modern applications are secured by external security provider, which provides the benefit that applications no longer need to own and manage users' credentials. Open Liberty also supports relevant security features, e.g., [Social Media Login](https://openliberty.io/docs/ref/feature/#socialLogin-1.0.html), [SAML Web Single Sign-on](https://openliberty.io/docs/ref/feature/#samlWeb-2.0.html) and [OpenID Connect Client](https://openliberty.io/docs/ref/feature/#openidConnectClient-1.0.html). In blog "[Securing Open Liberty apps and micro-services with MicroProfile JWT and Social Media login](https://openliberty.io/blog/2019/08/29/securing-microservices-social-login-jwt.html)", it gave a solid example on how to use Open Liberty Social Media Login feature to authenticate users using their existing social media credentials. In this blog, let's take a look at another example about how to use Open Liberty OpenID Connect Client feature to secure apps with [Azure Active Directory](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc).
 
-By the way, the sample code used in this blog is hosted on this [GitHub repo](https://github.com/majguo/liberty-aad-oidc), feel free to check it out and follow its user guide to run the demo application before or after reading this blog.
+By the way, the sample code used in this blog is hosted on this [GitHub repo](https://github.com/Azure-Samples/liberty-aad-oidc), feel free to check it out and follow its user guide to run the demo application before or after reading this blog.
 
 ## Set up Azure Active Directory
 
-Azure Active Directory (AAD) implements OpenID Connect (OIDC), an authentication protocol built on OAuth 2.0, which lets you securely sign in a user from AAD to an application. Before going into the sample code, you need to first set up AAD tenant and create an application registration with redirect URL & client secret. The tenant id, application(client) id & client secret are used by Open Liberty OpenID Connect Client to negotiate with AAD to complete [OAuth 2.0 authorization code flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow).
+Azure Active Directory (AAD) implements OpenID Connect (OIDC), an authentication protocol built on OAuth 2.0, which lets you securely sign in a user from AAD to an application. Before going into the sample code, you need to first set up AAD tenant and create an application registration with redirect URL & client secret. The tenant id, application(client) id & client secret are used by Open Liberty OpenID Connect Client to negotiate with AAD to complete [OAuth 2.0 authorization code flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow).
 
 Refer to the following articles on how to set it up:
 
-- [Create a new tenant](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
-- [Register an application](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
-- [Add a new client secret](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow#request-the-permissions-in-the-app-registration-portal)
+- [Create a new tenant](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
+- [Register an application](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
+- [Add a new client secret](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow#request-the-permissions-in-the-app-registration-portal)
 
 ## Configure OpenID Connect Client
 
@@ -20,7 +20,7 @@ The following sample code snippets show how a Jakarta EE application running on 
 
 The relevant server configuration in `server.xml`:
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="defaultServer">
   <!-- Enable features -->
@@ -33,7 +33,7 @@ The relevant server configuration in `server.xml`:
   <!-- trust JDK’s default truststore -->
   <ssl id="defaultSSLConfig"  trustDefaultCerts="true" />
 
-  <!-- add your tanent id, client ID and secret from AAD -->
+  <!-- add your tenant id, client ID and secret from AAD -->
   <openidConnectClient
     id="liberty-aad-oidc-javaeecafe" clientId="${client.id}"
     clientSecret="${client.secret}"
@@ -66,7 +66,7 @@ The sample application exposes a [JSF](https://www.oracle.com/java/technologies/
 
 The relevant configuration in `web.xml`:
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app>
     <security-role>
@@ -89,7 +89,7 @@ So when unauthenticated users attempt to access the JSF client, they are redirec
 
 To get authenticated user information, inject `javax.security.enterprise.SecurityContext` and call its method `getCallerPrincipal()`:
 
-```
+```java
 @Named
 @SessionScoped
 public class Cafe implements Serializable {
@@ -110,4 +110,4 @@ One of further considerations is to apply Json Web Token propagated from OpenID 
 ## Other references
 
 - [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
-- [Secure your application by using OpenID Connect and Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
+- [Secure your application by using OpenID Connect and Azure AD](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
