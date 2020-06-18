@@ -10,7 +10,7 @@ Azure Active Directory (AAD) implements OpenID Connect (OIDC), an authentication
 
 Refer to the following articles on how to set it up:
 
-- [Create a new tenant](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
+- [Create a new tenant](https://docs.microsoft.com/azure/active-directory/develop/quickstart-create-new-tenant)
 - [Register an application](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
 - [Add a new client secret](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow#request-the-permissions-in-the-app-registration-portal)
 
@@ -110,4 +110,4 @@ One of further considerations is to apply Json Web Token propagated from OpenID 
 ## Other references
 
 - [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
-- [Secure your application by using OpenID Connect and Azure AD](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
+- [Secure your application by using OpenID Connect and Azure AD](https://docs.microsoft.com/learn/modules/secure-app-with-oidc-and-azure-ad/)
