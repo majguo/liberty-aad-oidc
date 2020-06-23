@@ -41,10 +41,10 @@ public class Cafe implements Serializable {
     private transient SecurityContext securityContext;
 
     @Inject
-    private CafeJwtUtil jwtUtil;
+    private transient CafeJwtUtil jwtUtil;
 
     @Inject
-    private CafeRequestFilter filter;
+    private transient CafeRequestFilter filter;
 
     @NotNull
     @NotEmpty

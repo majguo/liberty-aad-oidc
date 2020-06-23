@@ -14,7 +14,7 @@ public class CafeRequestFilter implements Serializable, ClientRequestFilter {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private CafeJwtUtil jwtUtil;
+    private transient CafeJwtUtil jwtUtil;
 
     @Override
     public void filter(ClientRequestContext requestContext) {
