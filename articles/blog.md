@@ -13,7 +13,7 @@ Learn how to set up AAD from these articles:
 
 - [Create a new tenant](https://docs.microsoft.com/azure/active-directory/develop/quickstart-create-new-tenant)
 - [Register an application](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
-- [Add a new client secret](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow#request-the-permissions-in-the-app-registration-portal)
+- [Add a new client secret](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret)
 
 ## Configure OpenID Connect Client
 
@@ -88,7 +88,8 @@ The relevant configuration in `web.xml`:
 
 ### Workflow
 
-<!-- Please provide a diagram here -->
+![authorization-code-flow](convergence-scenarios-webapp.svg)
+*Picture 1: OpenID Connect sign-in and token acquisition flow, from [Microsoft identity platform and OpenID Connect protocol](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc#protocol-diagram-access-token-acquisition)*
 
 This is just standard Java EE security.  When an unauthenticated user attempt's to access the JSF client, they are redirected to Microsoft to provide their AAD credentials. Upon success, the browser gets redirected back to the client with an authorization code. The client then contacts the Microsoft again with authorization code, client Id & secret to obtain an ID token & access token, and finally create an authenticated user on the client, which then gets access to the JSF client.
 
@@ -108,11 +109,96 @@ public class Cafe implements Serializable {
 }
 ```
 
-## Taking it to the Next Level
+## Secure internal REST calls using JWT RBAC
 
-If you want to go further, you can apply Json Web Token propagated from OpenID Connect Provider to secure downstream internal REST calls with an HTTP Authorization header. Refer to [com.ibm.websphere.security.openidconnect.PropagationHelper.getIdToken()](https://github.com/OpenLiberty/open-liberty/blob/master/dev/com.ibm.ws.security.openidconnect.common/src/com/ibm/websphere/security/openidconnect/PropagationHelper.java#L60-L62) API to get the ID token issued by the OpenID Connect Provider.
+The `Cafe` bean depends on `CafeResource`, a REST service built with [JAX-RS](https://en.wikipedia.org/wiki/Java_API_for_RESTful_Web_Services), to create, read, update & delete coffees. The `CafeResource` is secured by [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) which verifies **groups claim** of token for RBAC (role based access control).
+
+```java
+@Path("coffees")
+public class CafeResource {
+
+    @Inject
+    private CafeRepository cafeRepository;
+
+    @Inject
+    @ConfigProperty(name = "admin.group.id")
+    private String ADMIN_GROUP_ID;
+
+    @Inject
+    private JsonWebToken jwtPrincipal;
+
+    @DELETE
+    @Path("{id}")
+    public void deleteCoffee(@PathParam("id") Long coffeeId) {
+        // Only users in the "admin group" are authorized to delete coffee
+        if (!this.jwtPrincipal.getGroups().contains(ADMIN_GROUP_ID)) {
+            throw new WebApplicationException(Response.Status.FORBIDDEN);
+        }
+
+        try {
+            this.cafeRepository.removeCoffeeById(coffeeId);
+        } catch (IllegalArgumentException ex) {
+            logger.log(Level.SEVERE, "Error calling deleteCoffee() for coffeeId {0}: {1}.",
+                    new Object[] { coffeeId, ex });
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+    }
+
+    @GET
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public List<Coffee> getAllCoffees() {
+        return this.cafeRepository.getAllCoffees();
+    }
+
+    @POST
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public Coffee createCoffee(Coffee coffee) {
+        try {
+            return this.cafeRepository.persistCoffee(coffee);
+        } catch (PersistenceException e) {
+            logger.log(Level.SEVERE, "Error creating coffee {0}: {1}.", new Object[] { coffee, e });
+            throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
+```
+
+The `admin.group.id` is injected into application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup. The JWT (Json Web Token) propagated to downstream `CafeResource` REST service is built using `preferred_username` & `groups` claims from [ID token](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.oauth_1.2-javadoc/com/ibm/websphere/security/openidconnect/token/IdToken.html) issued by AAD in the OpenID Connect authorization workflow.
+
+Here is the relevant configuration snippet in `server.xml`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="defaultServer">
+
+    <!-- Enable features -->
+    <featureManager>
+        <feature>jwt-1.0</feature>
+        <feature>mpJwt-1.1</feature>
+        <feature>mpConfig-1.3</feature>
+    </featureManager>
+
+    <!-- JWT builder -->
+    <jwtBuilder id="jwtAuthUserBuilder" keyAlias="default" issuer="https://example.com" expiresInSeconds="600" />
+
+    <!-- JWT consumer -->
+    <mpJwt id="jwtUserConsumer" keyName="default" issuer="https://example.com" authFilterRef="mpJwtAuthFilter" />
+
+    <!-- JWT auth filter -->
+    <authFilter id="mpJwtAuthFilter">
+        <requestUrl id="myRequestUrl" urlPattern="/rest" matchType="contains"/>
+    </authFilter>
+</server>
+```
+
+To add **groups claim** into ID token, you will need to create a group with type as **Security** and add one or more members. In the application registration created before, find 'Token configuration' > click 'Add groups claim' > select 'Security groups' as group types to include in ID token > expand 'ID' and select 'Group ID' in 'Customize token properties by type' section. Learn more details from these articles:
+
+- [Create a new group and add members](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal)
+- [Configuring groups optional claims](https://docs.microsoft.com/azure/active-directory/develop/active-directory-optional-claims#configuring-groups-optional-claims)
 
 ## Other references
 
 - [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
+- [Configuring the MicroProfile JSON Web Token](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_sec_json.html)
 - [Secure your application by using OpenID Connect and Azure AD](https://docs.microsoft.com/learn/modules/secure-app-with-oidc-and-azure-ad/)
