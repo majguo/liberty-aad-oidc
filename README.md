@@ -79,8 +79,8 @@ You can also get the application up and running using the `mvn` command.
 * Once the application starts, you can visit the JSF client at
   * [https://localhost:9443/javaee-cafe](https://localhost:9443/javaee-cafe)
   * [http://localhost:9080/javaee-cafe](http://localhost:9080/javaee-cafe)
-* Logging in with user who doesn't belong to the admin group, you're not allowed to remove coffee as **Delete** coffee button is disabled.
-* Logging in with user who belong to the admin group, you're allowed to remove coffee as **Delete** coffee button is enabled.
+* Logging in as a user who doesn't belong to the admin group, you won't be allowed to remove coffee entries as the **Delete** button will be disabled.
+* Logging in as a user who does belong to the admin group, you will be allowed to remove coffee entries as the **Delete** coffee button will be enabled.
 
 ## References
 * [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
