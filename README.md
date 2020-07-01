@@ -13,9 +13,10 @@ This project demonstrates how to secure your Java EE application on Open Liberty
 ## Setup Azure Active Directory
 * You will first need to [get an Azure Active Directory tenant](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-create-new-tenant). It is very likely your Azure account already has a tenant. Please note down your tenant/directory ID.
 * Although this isn't absolutely necessary, you can [create a few Azure Active Directory users](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/add-users-azure-active-directory). You can use these accounts or your own to test the application. Do note down email addresses and passwords for login.
-* You need to create a group as admin group to test RBAC (role-based-access-control) functionality. Follow [create a basic group and add members using Azure Active Directory](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal) to create a group with type as **Security** and add one or more members. Note down group ID.
+* You will need to create an admin group to enable JWT RBAC (role-based-access-control) functionality. Follow [create a basic group and add members using Azure Active Directory](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal) to create a group with type as **Security** and add one or more members. Note down the group ID.
 * You will need to [create a new application registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app) in Azure Active Directory. Please specify the redirect URI to be: https://localhost:9443/oidcclient/redirect/liberty-aad-oidc-javaeecafe. Please note down the application (client) ID.
 * You will need to create a new client secret. In the newly created application registration, find 'Certificates & secrets'. Select 'New client secret'. Provide a description and hit 'Add'. Note down the generated client secret value.
+* You will need to add a **groups claim** into the ID token. In the newly created application registration, find 'Token configuration'. Click 'Add groups claim'. Select 'Security groups' as group types to include in the ID token. Expand 'ID' and select 'Group ID' in the 'Customize token properties by type' section.
 
 ## Start the Database instance
 The first step to getting the application running is getting the database up. Please follow the instructions below to get the database running.
@@ -78,8 +79,8 @@ You can also get the application up and running using the `mvn` command.
 * Once the application starts, you can visit the JSF client at
   * [https://localhost:9443/javaee-cafe](https://localhost:9443/javaee-cafe)
   * [http://localhost:9080/javaee-cafe](http://localhost:9080/javaee-cafe)
-* Logging in with user who doesn't belong to the admin group, you're not allowed to remove coffee as **Delete** coffee button is disabled.
-* Logging in with user who belong to the admin group, you're allowed to remove coffee as **Delete** coffee button is enabled.
+* Logging in as a user who doesn't belong to the admin group, you won't be allowed to remove coffee entries as the **Delete** button will be disabled.
+* Logging in as a user who does belong to the admin group, you will be allowed to remove coffee entries as the **Delete** coffee button will be enabled.
 
 ## References
 * [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
