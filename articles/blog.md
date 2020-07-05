@@ -7,9 +7,9 @@ The sample code used in this blog is hosted on this [GitHub repo](https://github
 
 ## Set up Azure Active Directory
 
-Azure Active Directory (AAD) implements OpenID Connect (OIDC), an authentication protocol built on OAuth 2.0, which lets you securely sign in a user from AAD to an application.  You can't have AAD without Azure.  Before going into the sample code, you must first set up AAD an tenant and create an application registration with redirect URL & client secret. The tenant id, application(client) id & client secret are used by Open Liberty OpenID Connect Client to negotiate with AAD to complete [OAuth 2.0 authorization code flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow).
+Azure Active Directory (Azure AD) implements OpenID Connect (OIDC), an authentication protocol built on OAuth 2.0, which lets you securely sign in a user from Azure AD to an application.  Before going into the sample code, you must first set up an Azure AD tenant and create an application registration with redirect URL and client secret. The tenant id, application (client) id & client secret are used by the Open Liberty OIDC Client to negotiate with Azure AD to complete an [OAuth 2.0 authorization code flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow).
 
-Learn how to set up AAD from these articles:
+Learn how to set up Azure AD from these articles:
 
 - [Create a new tenant](https://docs.microsoft.com/azure/active-directory/develop/quickstart-create-new-tenant)
 - [Register an application](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
@@ -17,7 +17,7 @@ Learn how to set up AAD from these articles:
 
 ## Configure OpenID Connect Client
 
-The following sample code snippets show how a Jakarta EE application running on an Open Liberty server is configured with the OpenID Connect Client (openidConnectClient-1.0) **feature** to authenticate a user from an OpenID Connect Provider, with AAD as the designated security provider.
+The following sample code shows how a Jakarta EE application running on an Open Liberty server is configured with the OIDC Client (openidConnectClient-1.0) **feature** to authenticate a user from an OpenID Connect Provider, with Azure AD as the designated security provider.
 
 The relevant server configuration in `server.xml`:
 
@@ -34,7 +34,7 @@ The relevant server configuration in `server.xml`:
   <!-- trust JDK’s default truststore -->
   <ssl id="defaultSSLConfig"  trustDefaultCerts="true" />
 
-  <!-- add your tenant id, client ID and secret from AAD -->
+  <!-- add your tenant id, client ID and secret from Azure AD -->
   <openidConnectClient
     id="liberty-aad-oidc-javaeecafe" clientId="${client.id}"
     clientSecret="${client.secret}"
@@ -59,7 +59,7 @@ The relevant server configuration in `server.xml`:
 </server>
 ```
 
-Using AAD allows your application to use a certificate with a root CA signed by Microsoft's public certificate.  This certificate is added to the JVMs' default `cacerts`.  Trusting JVM default `cacerts` ensures a successful SSL handshake between OpenID Connect Client and AAD.
+Using Azure AD allows your application to use a certificate with a root CA signed by Microsoft's public certificate.  This certificate is added to the default `cacerts` of the JVM.  Trusting JVM default `cacerts` ensures a successful SSL handshake between OIDC Client and Azure AD.
 
 ## Use OpenID Connect to authenticate users
 
@@ -91,7 +91,7 @@ The relevant configuration in `web.xml`:
 ![authorization-code-flow](convergence-scenarios-webapp.svg)
 *Picture 1: OpenID Connect sign-in and token acquisition flow, from [Microsoft identity platform and OpenID Connect protocol](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc#protocol-diagram-access-token-acquisition)*
 
-This is just standard Java EE security.  When an unauthenticated user attempt's to access the JSF client, they are redirected to Microsoft to provide their AAD credentials. Upon success, the browser gets redirected back to the client with an authorization code. The client then contacts the Microsoft again with authorization code, client Id & secret to obtain an ID token & access token, and finally create an authenticated user on the client, which then gets access to the JSF client.
+This is just standard Java EE security.  When an unauthenticated user attempt's to access the JSF client, they are redirected to Microsoft to provide their Azure AD credentials. Upon success, the browser gets redirected back to the client with an authorization code. The client then contacts the Microsoft again with authorization code, client Id & secret to obtain an ID token & access token, and finally create an authenticated user on the client, which then gets access to the JSF client.
 
 To get authenticated user information, use the [CDI standard](http://cdi-spec.org/) `@Named` with the [AtInject](https://jcp.org/en/jsr/detail?id=330) standard `@Inject` annotations to obtain a reference to the `javax.security.enterprise.SecurityContext` and call its method `getCallerPrincipal()`:
 
@@ -111,7 +111,7 @@ public class Cafe implements Serializable {
 
 ## Secure internal REST calls using JWT RBAC
 
-The `Cafe` bean depends on `CafeResource`, a REST service built with [JAX-RS](https://en.wikipedia.org/wiki/Java_API_for_RESTful_Web_Services), to create, read, update & delete coffees. The `CafeResource` is secured by [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) which verifies **groups claim** of token for RBAC (role based access control).
+The `Cafe` bean depends on `CafeResource`, a REST service built with [JAX-RS](https://en.wikipedia.org/wiki/Java_API_for_RESTful_Web_Services), to create, read, update & delete coffees. The `CafeResource` implements RBAC (role based access control) using [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) to verify the **groups claim** of the token.
 
 ```java
 @Path("coffees")
@@ -164,7 +164,7 @@ public class CafeResource {
 }
 ```
 
-The `admin.group.id` is injected into application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup. The JWT (Json Web Token) propagated to downstream `CafeResource` REST service is built using `preferred_username` & `groups` claims from [ID token](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.oauth_1.2-javadoc/com/ibm/websphere/security/openidconnect/token/IdToken.html) issued by AAD in the OpenID Connect authorization workflow.
+The `admin.group.id` is injected into the application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup using the `[ConfigProperty](https://javadoc.io/doc/org.eclipse.microprofile.config/microprofile-config-api/latest/org/eclipse/microprofile/config/inject/ConfigProperty.html)` annotation. [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) enables you to `@Inject` the JWT (Json Web Token).  `CafeResource` REST receives the JWT with the `preferred_username` & `groups` claims from [ID token](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.oauth_1.2-javadoc/com/ibm/websphere/security/openidconnect/token/IdToken.html) issued by Azure AD in the OpenID Connect authorization workflow.
 
 Here is the relevant configuration snippet in `server.xml`:
 
@@ -192,7 +192,7 @@ Here is the relevant configuration snippet in `server.xml`:
 </server>
 ```
 
-To add **groups claim** into ID token, you will need to create a group with type as **Security** and add one or more members. In the application registration created before, find 'Token configuration' > click 'Add groups claim' > select 'Security groups' as group types to include in ID token > expand 'ID' and select 'Group ID' in 'Customize token properties by type' section. Learn more details from these articles:
+To add a **groups claim** into the ID token, you will need to create a group with type as **Security** and add one or more members. In the application registration created before, find 'Token configuration' > select 'Add groups claim' > select 'Security groups' as group types to include in ID token > expand 'ID' and select 'Group ID' in 'Customize token properties by type' section. Learn more details from these articles:
 
 - [Create a new group and add members](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal)
 - [Configuring groups optional claims](https://docs.microsoft.com/azure/active-directory/develop/active-directory-optional-claims#configuring-groups-optional-claims)
