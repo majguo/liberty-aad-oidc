@@ -164,7 +164,7 @@ public class CafeResource {
 }
 ```
 
-The `admin.group.id` is injected into the application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup using the `[ConfigProperty](https://javadoc.io/doc/org.eclipse.microprofile.config/microprofile-config-api/latest/org/eclipse/microprofile/config/inject/ConfigProperty.html)` annotation. [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) enables you to `@Inject` the JWT (Json Web Token).  `CafeResource` REST receives the JWT with the `preferred_username` & `groups` claims from [ID token](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.oauth_1.2-javadoc/com/ibm/websphere/security/openidconnect/token/IdToken.html) issued by Azure AD in the OpenID Connect authorization workflow.
+The `admin.group.id` is injected into the application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup using the `[ConfigProperty](https://javadoc.io/doc/org.eclipse.microprofile.config/microprofile-config-api/latest/org/eclipse/microprofile/config/inject/ConfigProperty.html)` annotation. [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) enables you to `@Inject` the JWT (Json Web Token).  The `CafeResource` REST endpoint receives the JWT with the `preferred_username` & `groups` claims from the [ID token](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.oauth_1.2-javadoc/com/ibm/websphere/security/openidconnect/token/IdToken.html) issued by Azure AD in the OpenID Connect authorization workflow.
 
 Here is the relevant configuration snippet in `server.xml`:
 
@@ -192,7 +192,7 @@ Here is the relevant configuration snippet in `server.xml`:
 </server>
 ```
 
-To add a **groups claim** into the ID token, you will need to create a group with type as **Security** and add one or more members. In the application registration created before, find 'Token configuration' > select 'Add groups claim' > select 'Security groups' as group types to include in ID token > expand 'ID' and select 'Group ID' in 'Customize token properties by type' section. Learn more details from these articles:
+To add a **groups claim** into the ID token, you will need to create a group with type as **Security** and add one or more members. In the application registration created earlier, find 'Token configuration' > select 'Add groups claim' > select 'Security groups' as group types to include in ID token > expand 'ID' and select 'Group ID' in 'Customize token properties by type' section. Learn more details from these articles:
 
 - [Create a new group and add members](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal)
 - [Configuring groups optional claims](https://docs.microsoft.com/azure/active-directory/develop/active-directory-optional-claims#configuring-groups-optional-claims)
