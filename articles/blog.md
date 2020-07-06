@@ -59,7 +59,7 @@ The relevant server configuration in `server.xml`:
 </server>
 ```
 
-Using Azure AD allows your application to use a certificate with a root CA signed by Microsoft's public certificate.  This certificate is added to the default `cacerts` of the JVM.  Trusting JVM default `cacerts` ensures a successful SSL handshake between OIDC Client and Azure AD.
+Using Azure AD allows your application to use a certificate with a root CA signed by Microsoft's public certificate.  This certificate is added to the default `cacerts` of the JVM.  Trusting the JVM default `cacerts` ensures a successful SSL handshake between the OIDC Client and Azure AD.
 
 ## Use OpenID Connect to authenticate users
 
