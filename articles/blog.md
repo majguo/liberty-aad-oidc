@@ -201,6 +201,10 @@ To add a **groups claim** into the ID token, you will need to create a group wit
 - [Create a new group and add members](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal)
 - [Configuring groups optional claims](https://docs.microsoft.com/azure/active-directory/develop/active-directory-optional-claims#configuring-groups-optional-claims)
 
+## Summary
+
+In this blog entry we demonstrated how to effectively secure an Open Liberty application using OpenID Connect and Azure Active Directory. This resource and the associated official Azure sample should also easily work for WebSphere Liberty. This effort is part of a broader partnership between Microsoft and IBM to provide better guidance and tools for Java EE, Jakarta EE and MicroProfile developers on Azure. We would like to hear from you as to what kind of tools and guidance you need. If possible, please [fill out a five minute survey](https://aka.ms/migration-survey) on this topic and share your invaluable feedback - especially if you would like to work closely with us (completely for free) on a cloud migration case.
+
 ## Other references
 
 - [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
