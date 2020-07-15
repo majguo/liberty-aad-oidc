@@ -115,7 +115,7 @@ public class Cafe implements Serializable {
 
 ## Secure internal REST calls using JWT RBAC
 
-The `Cafe` bean depends on `CafeResource`, a REST service built with [JAX-RS](https://en.wikipedia.org/wiki/Java_API_for_RESTful_Web_Services), to create, read, update & delete coffees. The `CafeResource` implements RBAC (role based access control) using [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) to verify the **groups claim** of the token.
+The `Cafe` bean depends on `CafeResource`, a REST service built with [JAX-RS](https://jakarta.ee/specifications/restful-ws/2.1/), to create, read, update & delete coffees. The `CafeResource` implements RBAC (role based access control) using [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) to verify the **groups claim** of the token.
 
 ```java
 @Path("coffees")
