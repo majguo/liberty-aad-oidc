@@ -15,7 +15,7 @@ Learn how to set up Azure AD from these articles:
 - [Register an application](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
 - [Add a new client secret](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret)
 
-## Configure OpenID Connect Client
+## Configure OpenID Connect client
 
 The following sample code shows how a Jakarta EE application running on an Open Liberty server is configured with the OIDC Client (openidConnectClient-1.0) **feature** to authenticate a user from an OpenID Connect Provider, with Azure AD as the designated security provider.
 
@@ -203,7 +203,7 @@ To add a **groups claim** into the ID token, you will need to create a group wit
 
 ## Summary
 
-In this blog entry we demonstrated how to effectively secure an Open Liberty application using OpenID Connect and Azure Active Directory. This resource and the associated official Azure sample should also easily work for WebSphere Liberty. This effort is part of a broader partnership between Microsoft and IBM to provide better guidance and tools for Java EE, Jakarta EE and MicroProfile developers on Azure. We would like to hear from you as to what kind of tools and guidance you need. If possible, please [fill out a five minute survey](https://aka.ms/migration-survey) on this topic and share your invaluable feedback - especially if you would like to work closely with us (completely for free) on a cloud migration case.
+In this blog entry we demonstrated how to effectively secure an Open Liberty application using OpenID Connect and Azure Active Directory. This resource and the associated official Azure sample should also easily work for WebSphere Liberty. This effort is part of a broader partnership between Microsoft and IBM to provide better guidance and tools for Java EE, [Jakarta EE](https://jakarta.ee) and [MicroProfile](https://microprofile.io) developers on Azure. We would like to hear from you as to what kind of tools and guidance you need. If possible, please [fill out a five minute survey](https://aka.ms/migration-survey) on this topic and share your invaluable feedback - especially if you would like to work closely with us (completely for free) on a cloud migration case.
 
 ## Other references
 
