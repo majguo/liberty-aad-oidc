@@ -40,8 +40,7 @@ The relevant server configuration in `server.xml`:
     clientSecret="${client.secret}"
     discoveryEndpointUrl="https://login.microsoftonline.com/${tenant.id}/v2.0/.well-known/openid-configuration"
     signatureAlgorithm="RS256"
-    userIdentityToCreateSubject="preferred_username"
-    inboundPropagation="supported" />
+    userIdentityToCreateSubject="preferred_username" />
 
   <!-- grant role "users" to all authenticated users -->
   <webApplication id="javaee-cafe"
