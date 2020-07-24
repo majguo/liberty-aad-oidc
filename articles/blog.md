@@ -197,7 +197,7 @@ Here is the relevant configuration snippet in `server.xml`:
 </server>
 ```
 
-To add a **groups claim** into the ID token, you will need to create a group with type as **Security** and add one or more members. In the application registration created earlier, find 'Token configuration' > select 'Add groups claim' > select 'Security groups' as group types to include in ID token > expand 'ID' and select 'Group ID' in 'Customize token properties by type' section. Learn more details from these articles:
+Note, the groups claim is not propagated by default and requires additional Azure AD configuration. To add a **groups claim** into the ID token, you will need to create a group with type as **Security** and add one or more members to it in Azure AD. In the application registration created as part of Azure AD configuration, you will also need to: find 'Token configuration' > select 'Add groups claim' > select 'Security groups' as group types to include in ID token > expand 'ID' and select 'Group ID' in 'Customize token properties by type' section. Learn more details from these articles:
 
 - [Create a new group and add members](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal)
 - [Configuring groups optional claims](https://docs.microsoft.com/azure/active-directory/develop/active-directory-optional-claims#configuring-groups-optional-claims)
