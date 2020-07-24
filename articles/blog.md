@@ -32,7 +32,7 @@ The relevant server configuration in `server.xml`:
   </featureManager>
 
   <!-- trust JDK’s default truststore -->
-  <ssl id="defaultSSLConfig"  trustDefaultCerts="true" />
+  <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
 
   <!-- add your tenant ID, client ID and secret from Azure AD -->
   <oidcLogin
@@ -58,17 +58,17 @@ The relevant server configuration in `server.xml`:
 </server>
 ```
 
-The `oidcLogin` element has a large number of configuration options. With Azure AD, most of them are not required as discovery endpoints are supported, allowing for most configuration to be automatically handled. Indeed Azure AD instances follow a known pattern for discovery endpoint URLs, allowing us to parameterize the URL using a tenant ID. In addition to that, a client ID and secret is needed. RS256 must be used as the signature algorithm with Azure AD.
+The `oidcLogin` element has a large number of configuration options. With Azure AD, most of them are not required as discovery endpoints are supported, allowing for most configuration to be automatically handled. Indeed Azure AD instances follow a known pattern for discovery endpoint URLs, allowing us to parameterize the URL using a tenant ID. In addition to that, a client ID and secret is needed. `RS256` must be used as the signature algorithm with Azure AD.
 
 The `userNameAttribute` parameter is used to map a token value from Azure AD to a unique subject identity in Liberty. There are a number of Azure AD token values you can use that are [listed here](https://docs.microsoft.com/azure/active-directory/develop/access-tokens). Do be cautious as the required tokens that exist for v1.0 and v2.0 differ (with v2.0 not supporting some v1.0 tokens). Either `preferred_username` or `oid` can be safely used, although in most cases you will probably want to use the `preferred_username`.
 
-Using Azure AD allows your application to use a certificate with a root CA signed by Microsoft's public certificate.  This certificate is added to the default `cacerts` of the JVM.  Trusting the JVM default `cacerts` ensures a successful SSL handshake between the OIDC Client and Azure AD (i.e. setting the `defaultSSLConfig` `trustDefaultCerts` value to true).
+Using Azure AD allows your application to use a certificate with a root CA signed by Microsoft's public certificate.  This certificate is added to the default `cacerts` of the JVM.  Trusting the JVM default `cacerts` ensures a successful SSL handshake between the OIDC Client and Azure AD (i.e. setting the `defaultSSLConfig` `trustDefaultCerts` value to `true`).
 
 In our case, we assign all users authenticated via Azure AD the `users` role. More complex role mappings are possible with Liberty if desired.
 
 ## Use OpenID Connect to authenticate users
 
-The sample application exposes a [JSF](https://jakarta.ee/specifications/faces/2.3/) client which defines a Java EE security constraint that only users with role "users" can access.
+The sample application exposes a [JSF](https://jakarta.ee/specifications/faces/2.3/) client which defines a Java EE security constraint that only users with role `users` can access.
 
 The relevant configuration in `web.xml`:
 
