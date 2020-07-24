@@ -7,7 +7,7 @@ The sample code used in this blog is hosted on this [GitHub repository](https://
 
 ## Set up Azure Active Directory
 
-Azure Active Directory (Azure AD) implements OpenID Connect (OIDC), an authentication protocol built on OAuth 2.0, which lets you securely sign in a user from Azure AD to an application.  Before going into the sample code, you must first set up an Azure AD tenant and create an application registration with a redirect URL and client secret. The tenant ID, application (client) ID & client secret are used by Open Liberty to negotiate with Azure AD to complete an [OAuth 2.0 authorization code flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow).
+Azure Active Directory (Azure AD) implements OpenID Connect (OIDC), an authentication protocol built on OAuth 2.0, which lets you securely sign in a user from Azure AD to an application.  Before going into the sample code, you must first set up an Azure AD tenant and create an application registration with a redirect URL and client secret. The tenant ID, application (client) ID and client secret are used by Open Liberty to negotiate with Azure AD to complete an [OAuth 2.0 authorization code flow](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow).
 
 Learn how to set up Azure AD from these articles:
 
