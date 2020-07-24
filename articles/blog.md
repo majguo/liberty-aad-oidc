@@ -34,7 +34,7 @@ The relevant server configuration in `server.xml`:
   <!-- trust JDK’s default truststore -->
   <ssl id="defaultSSLConfig"  trustDefaultCerts="true" />
 
-  <!-- add your tenant id, client ID and secret from Azure AD -->
+  <!-- add your tenant ID, client ID and secret from Azure AD -->
   <oidcLogin
     id="liberty-aad-oidc-javaeecafe" clientId="${client.id}"
     clientSecret="${client.secret}"
@@ -94,7 +94,7 @@ The relevant configuration in `web.xml`:
 ![authorization-code-flow](convergence-scenarios-webapp.svg)
 *Picture 1: OpenID Connect sign-in and token acquisition flow, from [Microsoft identity platform and OpenID Connect protocol](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc#protocol-diagram-access-token-acquisition)*
 
-This is just standard Java EE security.  When an unauthenticated user attempt's to access the JSF client, they are redirected to Microsoft to provide their Azure AD credentials. Upon success, the browser gets redirected back to the client with an authorization code. The client then contacts Microsoft again with authorization code, client Id & secret to obtain an ID token & access token, and finally create an authenticated user on the client, which then gets access to the JSF client.
+This is just standard Java EE security.  When an unauthenticated user attempt's to access the JSF client, they are redirected to Microsoft to provide their Azure AD credentials. Upon success, the browser gets redirected back to the client with an authorization code. The client then contacts Microsoft again with the authorization code, client ID and secret to obtain an ID token and access token, and finally create an authenticated user on the client, which then gets access to the JSF client.
 
 To get authenticated user information, use the `@Inject` annotation to obtain a reference to the `javax.security.enterprise.SecurityContext` and call its method `getCallerPrincipal()`:
 
