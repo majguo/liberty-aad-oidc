@@ -114,7 +114,7 @@ public class Cafe implements Serializable {
 
 ## Secure internal REST calls using JWT RBAC
 
-The `Cafe` bean depends on `CafeResource`, a REST service built with [JAX-RS](https://jakarta.ee/specifications/restful-ws/2.1/), to create, read, update & delete coffees. The `CafeResource` implements RBAC (role based access control) using [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) to verify the **groups claim** of the token.
+The `Cafe` bean depends on `CafeResource`, a REST service built with [JAX-RS](https://jakarta.ee/specifications/restful-ws/2.1/), to create, read, update and delete coffees. The `CafeResource` implements RBAC (role based access control) using [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) to verify the **groups claim** of the token.
 
 ```java
 @Path("coffees")
@@ -167,7 +167,7 @@ public class CafeResource {
 }
 ```
 
-The `admin.group.id` is injected into the application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup using the [ConfigProperty](https://javadoc.io/doc/org.eclipse.microprofile.config/microprofile-config-api/latest/org/eclipse/microprofile/config/inject/ConfigProperty.html) annotation. [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) enables you to `@Inject` the JWT (Json Web Token).  The `CafeResource` REST endpoint receives the JWT with the `preferred_username` & `groups` claims from the **ID Token** issued by Azure AD in the OpenID Connect authorization workflow. The **ID Token** can be retrieved using the [`com.ibm.websphere.security.social.UserProfileManager`](https://www.ibm.com/support/knowledgecenter/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.social_1.0-javadoc/com/ibm/websphere/security/social/UserProfileManager.html) and [`com.ibm.websphere.security.social.UserProfile`](https://www.ibm.com/support/knowledgecenter/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.social_1.0-javadoc/com/ibm/websphere/security/social/UserProfile.html) APIs.
+The `admin.group.id` is injected into the application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup using the [ConfigProperty](https://javadoc.io/doc/org.eclipse.microprofile.config/microprofile-config-api/latest/org/eclipse/microprofile/config/inject/ConfigProperty.html) annotation. [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) enables you to `@Inject` the JWT (Json Web Token).  The `CafeResource` REST endpoint receives the JWT with the `preferred_username` and `groups` claims from the **ID Token** issued by Azure AD in the OpenID Connect authorization workflow. The **ID Token** can be retrieved using the [`com.ibm.websphere.security.social.UserProfileManager`](https://www.ibm.com/support/knowledgecenter/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.social_1.0-javadoc/com/ibm/websphere/security/social/UserProfileManager.html) and [`com.ibm.websphere.security.social.UserProfile`](https://www.ibm.com/support/knowledgecenter/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.social_1.0-javadoc/com/ibm/websphere/security/social/UserProfile.html) APIs.
 
 Here is the relevant configuration snippet in `server.xml`:
 
