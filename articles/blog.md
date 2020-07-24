@@ -66,7 +66,7 @@ In our case, we assign all users authenticated via Azure AD the `users` role. Mo
 
 ## Use OpenID Connect to authenticate users
 
-The sample application exposes a [JSF](https://jakarta.ee/specifications/faces/2.3/) client which defines a Java EE security constraint that only user's with role "users" can access.
+The sample application exposes a [JSF](https://jakarta.ee/specifications/faces/2.3/) client which defines a Java EE security constraint that only users with role "users" can access.
 
 The relevant configuration in `web.xml`:
 
