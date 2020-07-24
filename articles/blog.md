@@ -17,7 +17,7 @@ Learn how to set up Azure AD from these articles:
 
 ## Configure social login as OpenID Connect client
 
-The following sample code shows how a Jakarta EE application running on an Open Liberty server is configured with the social login (**socialLogin-1.0**) feature as OpenID Connect client to authenticate a user from an OpenID Connect Provider, with Azure AD as the designated security provider.
+The following sample code shows how a Java EE application running on an Open Liberty server is configured with the social login (**socialLogin-1.0**) feature as an OpenID Connect client to authenticate a user from an OpenID Connect Provider, with Azure AD as the designated security provider.
 
 The relevant server configuration in `server.xml`:
 
