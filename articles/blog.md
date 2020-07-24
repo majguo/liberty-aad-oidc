@@ -96,7 +96,7 @@ The relevant configuration in `web.xml`:
 
 This is just standard Java EE security.  When an unauthenticated user attempt's to access the JSF client, they are redirected to Microsoft to provide their Azure AD credentials. Upon success, the browser gets redirected back to the client with an authorization code. The client then contacts Microsoft again with authorization code, client Id & secret to obtain an ID token & access token, and finally create an authenticated user on the client, which then gets access to the JSF client.
 
-To get authenticated user information, use the [CDI standard](http://cdi-spec.org/) `@Named` with the [AtInject](https://jcp.org/en/jsr/detail?id=330) standard `@Inject` annotations to obtain a reference to the `javax.security.enterprise.SecurityContext` and call its method `getCallerPrincipal()`:
+To get authenticated user information, use the `@Inject` annotation to obtain a reference to the `javax.security.enterprise.SecurityContext` and call its method `getCallerPrincipal()`:
 
 ```java
 @Named
