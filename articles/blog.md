@@ -1,6 +1,6 @@
 # Securing Open Liberty Application with Azure Active Directory via OpenID Connect
 
-Long gone are the days when you had to create your own user account management, authentication, and authorization for your web delivered software.  Instead, contemporary applications leverage these functions (Identity and Access Management, IAM for short) from an external provider.  Java EE has powerful standard abstractions for these functions and [Open Liberty](https://openliberty.io), being a full Java EE runtime, has great options for externally provided IAM.  Open Liberty also supports IAM mainstays such as [Social Media Login](https://openliberty.io/docs/ref/feature/#socialLogin-1.0.html), [SAML Web Single Sign-on](https://openliberty.io/docs/ref/feature/#samlWeb-2.0.html) and [OpenID Connect Client](https://openliberty.io/docs/ref/feature/#openidConnectClient-1.0.html). In Bruce Tiffany's blog post "[Securing Open Liberty apps and micro-services with MicroProfile JWT and Social Media login](https://openliberty.io/blog/2019/08/29/securing-microservices-social-login-jwt.html)", you have a solid example on how to use the Open Liberty Social Media Login feature to authenticate users using their existing social media credentials. In this blog post, let's take a look at another example about how to use the Open Liberty OpenID Connect Client feature to secure applications with [Azure Active Directory](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc) using the existing Java EE IAM APIs.
+Long gone are the days when you had to create your own user account management, authentication, and authorization for your web delivered software.  Instead, contemporary applications leverage these functions (Identity and Access Management, IAM for short) from an external provider.  Java EE has powerful standard abstractions for these functions and [Open Liberty](https://openliberty.io), being a full Java EE runtime, has great options for externally provided IAM.  Open Liberty also supports IAM mainstays such as [Social Media Login](https://openliberty.io/docs/ref/feature/#socialLogin-1.0.html), [SAML Web Single Sign-on](https://openliberty.io/docs/ref/feature/#samlWeb-2.0.html) and [OpenID Connect Client](https://openliberty.io/docs/ref/feature/#openidConnectClient-1.0.html). In Bruce Tiffany's blog post "[Securing Open Liberty apps and micro-services with MicroProfile JWT and Social Media login](https://openliberty.io/blog/2019/08/29/securing-microservices-social-login-jwt.html)", you have a solid example on how to use the Open Liberty Social Media Login feature to authenticate users using their existing social media credentials. In this blog post, let's take a look at another example about how to configure social login as OpenID Connect client to secure applications with [Azure Active Directory](https://docs.microsoft.com/azure/active-directory/develop/v2-protocols-oidc) using the existing Java EE IAM APIs.
 
 <!-- IMPORTANT: find a way to capture this activation action to count against our OKRs.  DO NOT PUBLISH without this. -->
 The sample code used in this blog is hosted on this [GitHub repository](https://github.com/Azure-Samples/liberty-aad-oidc), feel free to check it out and follow its user guide to run the demo application before or after reading this blog.
@@ -15,9 +15,9 @@ Learn how to set up Azure AD from these articles:
 - [Register an application](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
 - [Add a new client secret](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret)
 
-## Configure OpenID Connect client
+## Configure social login as OpenID Connect client
 
-The following sample code shows how a Jakarta EE application running on an Open Liberty server is configured with the OIDC Client (openidConnectClient-1.0) **feature** to authenticate a user from an OpenID Connect Provider, with Azure AD as the designated security provider.
+The following sample code shows how a Jakarta EE application running on an Open Liberty server is configured with the social login (**socialLogin-1.0**) feature as OpenID Connect client to authenticate a user from an OpenID Connect Provider, with Azure AD as the designated security provider.
 
 The relevant server configuration in `server.xml`:
 
@@ -26,7 +26,7 @@ The relevant server configuration in `server.xml`:
 <server description="defaultServer">
   <!-- Enable features -->
   <featureManager>
-    <feature>openidConnectClient-1.0</feature>
+    <feature>socialLogin-1.0</feature>
     <feature>transportSecurity-1.0</feature>
     <feature>appSecurity-3.0</feature>
   </featureManager>
@@ -35,12 +35,12 @@ The relevant server configuration in `server.xml`:
   <ssl id="defaultSSLConfig"  trustDefaultCerts="true" />
 
   <!-- add your tenant id, client ID and secret from Azure AD -->
-  <openidConnectClient
+  <oidcLogin
     id="liberty-aad-oidc-javaeecafe" clientId="${client.id}"
     clientSecret="${client.secret}"
-    discoveryEndpointUrl="https://login.microsoftonline.com/${tenant.id}/v2.0/.well-known/openid-configuration"
+    discoveryEndpoint="https://login.microsoftonline.com/${tenant.id}/v2.0/.well-known/openid-configuration"
     signatureAlgorithm="RS256"
-    userIdentityToCreateSubject="preferred_username" />
+    userNameAttribute="preferred_username" />
 
   <!-- grant role "users" to all authenticated users -->
   <webApplication id="javaee-cafe"
@@ -58,7 +58,7 @@ The relevant server configuration in `server.xml`:
 </server>
 ```
 
-The `openidConnectClient` element has a large number of configuration options. With Azure AD, most of them are not required as discovery endpoints are supported, allowing for most configuration to be automatically handled. Indeed Azure AD instances follow a known pattern for discovery endpoint URLs, allowing us to parameterize the URL using a tenant ID. In addition to that, a client ID and secret is needed. RS256 must be used as the signature algorithm with Azure AD. The `userIdentityToCreateSubject` parameter is used to map a token value from Azure AD to a unique subject identity in Liberty. There are a number of Azure AD token values you can use that are [listed here](https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens). Do be cautious as the required tokens that exist for v1.0 and v2.0 differ (with v2.0 not supporting some v1.0 tokens). Either `preferred_username` or `oid` can be safely used, although in most cases you will probably want to use the `preferred_username`.
+The `oidcLogin` element has a large number of configuration options. With Azure AD, most of them are not required as discovery endpoints are supported, allowing for most configuration to be automatically handled. Indeed Azure AD instances follow a known pattern for discovery endpoint URLs, allowing us to parameterize the URL using a tenant ID. In addition to that, a client ID and secret is needed. RS256 must be used as the signature algorithm with Azure AD. The `userNameAttribute` parameter is used to map a token value from Azure AD to a unique subject identity in Liberty. There are a number of Azure AD token values you can use that are [listed here](https://docs.microsoft.com/azure/active-directory/develop/access-tokens). Do be cautious as the required tokens that exist for v1.0 and v2.0 differ (with v2.0 not supporting some v1.0 tokens). Either `preferred_username` or `oid` can be safely used, although in most cases you will probably want to use the `preferred_username`.
 
 Using Azure AD allows your application to use a certificate with a root CA signed by Microsoft's public certificate.  This certificate is added to the default `cacerts` of the JVM.  Trusting the JVM default `cacerts` ensures a successful SSL handshake between the OIDC Client and Azure AD (i.e. setting the `defaultSSLConfig` `trustDefaultCerts` value to true).
 
@@ -167,7 +167,7 @@ public class CafeResource {
 }
 ```
 
-The `admin.group.id` is injected into the application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup using the [ConfigProperty](https://javadoc.io/doc/org.eclipse.microprofile.config/microprofile-config-api/latest/org/eclipse/microprofile/config/inject/ConfigProperty.html) annotation. [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) enables you to `@Inject` the JWT (Json Web Token).  The `CafeResource` REST endpoint receives the JWT with the `preferred_username` & `groups` claims from the [ID token](https://www.ibm.com/support/knowledgecenter/en/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.oauth_1.2-javadoc/com/ibm/websphere/security/openidconnect/token/IdToken.html) issued by Azure AD in the OpenID Connect authorization workflow.
+The `admin.group.id` is injected into the application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup using the [ConfigProperty](https://javadoc.io/doc/org.eclipse.microprofile.config/microprofile-config-api/latest/org/eclipse/microprofile/config/inject/ConfigProperty.html) annotation. [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) enables you to `@Inject` the JWT (Json Web Token).  The `CafeResource` REST endpoint receives the JWT with the `preferred_username` & `groups` claims from the **ID Token** issued by Azure AD in the OpenID Connect authorization workflow. The **ID Token** can be retrieved using the [`com.ibm.websphere.security.social.UserProfileManager`](https://www.ibm.com/support/knowledgecenter/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.social_1.0-javadoc/com/ibm/websphere/security/social/UserProfileManager.html) and [`com.ibm.websphere.security.social.UserProfile`](https://www.ibm.com/support/knowledgecenter/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.social_1.0-javadoc/com/ibm/websphere/security/social/UserProfile.html) APIs.
 
 Here is the relevant configuration snippet in `server.xml`:
 
@@ -182,11 +182,13 @@ Here is the relevant configuration snippet in `server.xml`:
         <feature>mpConfig-1.3</feature>
     </featureManager>
 
-    <!-- JWT builder -->
-    <jwtBuilder id="jwtAuthUserBuilder" keyAlias="default" issuer="https://example.com" expiresInSeconds="600" />
-
     <!-- JWT consumer -->
-    <mpJwt id="jwtUserConsumer" keyName="default" issuer="https://example.com" authFilterRef="mpJwtAuthFilter" />
+    <mpJwt id="jwtUserConsumer"
+        jwksUri="https://login.microsoftonline.com/${tenant.id}/discovery/v2.0/keys"
+        issuer="https://login.microsoftonline.com/${tenant.id}/v2.0"
+        audiences="${client.id}"
+        userNameAttribute="preferred_username"
+        authFilterRef="mpJwtAuthFilter" />
 
     <!-- JWT auth filter -->
     <authFilter id="mpJwtAuthFilter">
@@ -206,6 +208,6 @@ In this blog entry we demonstrated how to effectively secure an [Open Liberty](h
 
 ## Other references
 
-- [Configuring an OpenID Connect Client in Liberty](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_config_oidc_rp.html)
+- [Configure social login as OpenID Connect client](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_sec_sociallogin.html#twlp_sec_sociallogin__openid)
 - [Configuring the MicroProfile JSON Web Token](https://www.ibm.com/support/knowledgecenter/SSEQTP_liberty/com.ibm.websphere.wlp.doc/ae/twlp_sec_json.html)
 - [Secure your application by using OpenID Connect and Azure AD](https://docs.microsoft.com/learn/modules/secure-app-with-oidc-and-azure-ad/)
