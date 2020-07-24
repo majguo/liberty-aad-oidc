@@ -17,7 +17,7 @@ Learn how to set up Azure AD from these articles:
 
 ## Configure social login as OpenID Connect client
 
-The following sample code shows how an application running on an Open Liberty server is configured with the social login (**socialLogin-1.0**) feature as an OpenID Connect client to authenticate a user from an OpenID Connect Provider, with Azure AD as the designated security provider.
+The following sample code shows how an application running on an Open Liberty server is configured with the `socialLogin-1.0` feature as an OpenID Connect client to authenticate a user from an OpenID Connect Provider, with Azure AD as the designated security provider.
 
 The relevant server configuration in `server.xml`:
 
@@ -114,7 +114,7 @@ public class Cafe implements Serializable {
 
 ## Secure internal REST calls using JWT RBAC
 
-The `Cafe` bean depends on `CafeResource`, a REST service built with [JAX-RS](https://jakarta.ee/specifications/restful-ws/2.1/), to create, read, update and delete coffees. The `CafeResource` implements RBAC (role based access control) using [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) to verify the **groups claim** of the token.
+The `Cafe` bean depends on `CafeResource`, a REST service built with [JAX-RS](https://jakarta.ee/specifications/restful-ws/2.1/), to create, read, update and delete coffees. The `CafeResource` implements RBAC (role based access control) using [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) to verify the groups claim of the token.
 
 ```java
 @Path("coffees")
@@ -167,7 +167,7 @@ public class CafeResource {
 }
 ```
 
-The `admin.group.id` is injected into the application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup using the [ConfigProperty](https://javadoc.io/doc/org.eclipse.microprofile.config/microprofile-config-api/latest/org/eclipse/microprofile/config/inject/ConfigProperty.html) annotation. [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) enables you to `@Inject` the JWT (Json Web Token).  The `CafeResource` REST endpoint receives the JWT with the `preferred_username` and `groups` claims from the **ID Token** issued by Azure AD in the OpenID Connect authorization workflow. The **ID Token** can be retrieved using the [`com.ibm.websphere.security.social.UserProfileManager`](https://www.ibm.com/support/knowledgecenter/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.social_1.0-javadoc/com/ibm/websphere/security/social/UserProfileManager.html) and [`com.ibm.websphere.security.social.UserProfile`](https://www.ibm.com/support/knowledgecenter/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.social_1.0-javadoc/com/ibm/websphere/security/social/UserProfile.html) APIs.
+The `admin.group.id` is injected into the application using [MicroProfile Config](https://github.com/eclipse/microprofile-config) at the application startup using the [ConfigProperty](https://javadoc.io/doc/org.eclipse.microprofile.config/microprofile-config-api/latest/org/eclipse/microprofile/config/inject/ConfigProperty.html) annotation. [MicroProfile JWT](https://github.com/eclipse/microprofile-jwt-auth) enables you to `@Inject` the JWT (Json Web Token).  The `CafeResource` REST endpoint receives the JWT with the `preferred_username` and `groups` claims from the ID Token issued by Azure AD in the OpenID Connect authorization workflow. The ID Token can be retrieved using the [`com.ibm.websphere.security.social.UserProfileManager`](https://www.ibm.com/support/knowledgecenter/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.social_1.0-javadoc/com/ibm/websphere/security/social/UserProfileManager.html) and [`com.ibm.websphere.security.social.UserProfile`](https://www.ibm.com/support/knowledgecenter/SS7K4U_liberty/com.ibm.websphere.javadoc.liberty.doc/com.ibm.websphere.appserver.api.social_1.0-javadoc/com/ibm/websphere/security/social/UserProfile.html) APIs.
 
 Here is the relevant configuration snippet in `server.xml`:
 
@@ -197,7 +197,7 @@ Here is the relevant configuration snippet in `server.xml`:
 </server>
 ```
 
-Note, the groups claim is not propagated by default and requires additional Azure AD configuration. To add a **groups claim** into the ID token, you will need to create a group with type as **Security** and add one or more members to it in Azure AD. In the application registration created as part of Azure AD configuration, you will also need to: find 'Token configuration' > select 'Add groups claim' > select 'Security groups' as group types to include in ID token > expand 'ID' and select 'Group ID' in 'Customize token properties by type' section. Learn more details from these articles:
+Note, the groups claim is not propagated by default and requires additional Azure AD configuration. To add a groups claim into the ID token, you will need to create a group with type as 'Security' and add one or more members to it in Azure AD. In the application registration created as part of Azure AD configuration, you will also need to: find 'Token configuration' > select 'Add groups claim' > select 'Security groups' as group types to include in ID token > expand 'ID' and select 'Group ID' in 'Customize token properties by type' section. Learn more details from these articles:
 
 - [Create a new group and add members](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal)
 - [Configuring groups optional claims](https://docs.microsoft.com/azure/active-directory/develop/active-directory-optional-claims#configuring-groups-optional-claims)
