@@ -1,4 +1,4 @@
-# Securing Open Liberty Application with Azure Active Directory via OpenID Connect
+# Securing Open Liberty Applications with Azure Active Directory via OpenID Connect
 
 Long gone are the days when you had to create your own user account management, authentication, and authorization for your web delivered software.  Instead, contemporary applications leverage these functions (Identity and Access Management, IAM for short) from an external provider.  Java EE has powerful standard abstractions for these functions and [Open Liberty](https://openliberty.io), being a full Java EE runtime, has great options for externally provided IAM. Open Liberty also supports [Jakarta EE](https://jakarta.ee) (Java EE has been transferred to the Eclipse Foundation as Jakarta EE under vendor-neutral open source governance) and [MicroProfile](https://microprofile.io) (MicroProfile is a set of open source specifications that build upon Java EE technologies and target the microservices domain).
 
